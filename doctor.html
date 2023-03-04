@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Patients</title>
+	<style>
+		.container {
+			display: flex;
+			flex-direction: row;
+            justify-content: space-between;
+		}
+
+		.patients-container {
+			width: 48%;
+			padding: 10px;
+            background-color: aliceblue;
+		}
+
+		.calendar-container {
+			width: 48%;
+			padding: 10px;
+            background-color: aliceblue;
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		ul {
+			list-style: none;
+			padding: 0;
+		}
+
+		.patient {
+			cursor: pointer;
+			padding: 10px;
+			border: 1px solid black;
+			margin-bottom: 10px;
+		}
+
+		.patient:hover {
+			background-color: #eee;
+		}
+
+		.patient.active {
+			background-color: #ddd;
+		}
+
+		.patient-details {
+			display: none;
+			padding-left: 20px;
+		}
+
+		.button-container {
+			text-align: center;
+		}
+
+		button {
+			margin-right: 10px;
+			padding: 10px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			cursor: pointer;
+		}
+
+        .temp-calendar {
+            width: 200px;
+            height: 500px;
+        }
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="patients-container">
+			<h1>My Patients</h1>
+			<ul>
+				<li class="patient">
+					<div class="patient-header">
+						<span class="patient-id">1</span>
+						<span class="patient-name">John Doe</span>
+					</div>
+					<div class="patient-details">
+						<p>Address: 123 Main St</p>
+						<p>Phone: (123) 456-7890</p>
+                        <p>/*Other details*/</p>
+					</div>
+				</li>
+				<li class="patient">
+					<div class="patient-header">
+						<span class="patient-id">2</span>
+						<span class="patient-name">Jane Smith</span>
+					</div>
+					<div class="patient-details">
+						<p>Address: 456 Oak St</p>
+						<p>Phone: (123) 555-7890</p>
+                        <p>/*Other details*/</p>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<div class="calendar-container">
+			<h1>My Calendar</h1>
+            <div class="temp-calendar"></div>
+			<div class="button-container">
+				<button>Record Medication Prescribed</button>
+				<button>Record Test/Treatment Prescribed</button>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		const patients = document.querySelectorAll('.patient');
+    
+		patients.forEach(patient => {
+			patient.addEventListener('click', () => {
+				const isActive = patient.classList.contains('active');
+
+				patients.forEach(p => {
+					p.classList.remove('active');
+					p.querySelector('.patient-details').style.display = 'none';
+				});
+
+				if (!isActive) {
+					patient.classList.add('active');
+					patient.querySelector('.patient-details').style.display = 'block';
+				}
+			})
+		});
+	</script>
+</body>
+</html>
+
