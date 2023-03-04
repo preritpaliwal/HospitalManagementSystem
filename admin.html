@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Admin Page</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background-color: #f1f1f1;
+			padding: 20px;
+		}
+
+		h1 {
+			color: #333;
+			font-size: 32px;
+			margin-bottom: 20px;
+		}
+
+		form {
+			background-color: #fff;
+			padding: 20px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+			margin-bottom: 20px;
+            margin-bottom: 50px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			color: #333;
+		}
+
+		input[type="text"], input[type="password"], select {
+			padding: 10px;
+			width: 100%;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			margin-bottom: 20px;
+			font-size: 16px;
+			color: #333;
+			box-sizing: border-box;
+		}
+
+		input[type="submit"] {
+			background-color: #4CAF50;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 3px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+
+		table {
+			border-collapse: collapse;
+			margin-bottom: 20px;
+            width : 100%;
+		}
+
+		th, td {
+			padding: 10px;
+			text-align: left;
+			border-bottom: 1px solid #ccc;
+		}
+
+		th {
+			background-color: #f2f2f2;
+			color: #333;
+		}
+
+		.delete-btn {
+			background-color: #f44336;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 3px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+
+		.delete-btn:hover {
+			background-color: #d32f2f;
+		}
+	</style>
+</head>
+<body>
+	<h1 style="margin-top: 30px;">Add New User</h1>
+	<form>
+		<label for="username">Username:</label>
+		<input type="text" id="username" name="username" required>
+
+		<label for="password">Password:</label>
+		<input type="password" id="password" name="password" required>
+
+		<label for="type">Type:</label>
+		<select id="type" name="type">
+            <option value="admin">Administrator</option>
+			<option value="front-desk-operator">Front Desk Operator</option>
+			<option value="data-entry-operator">Data Entry Operator</option>
+			<option value="doctor">Doctor</option>
+		</select>
+
+		<input type="submit" value="Add User">
+	</form>
+
+	<h1 style="margin-top: 30px;">Current Users</h1>
+	<table>
+		<thead>
+			<tr>
+				<th>Username</th>
+				<th>Type</th>
+				<th>Remove</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>John Doe</td>
+				<td>Front Desk Operator</td>
+				<td><button class="delete-btn">Delete User</button></td>
+			</tr>
+			<tr>
+                <td>Anushka</td>
+                <td>Doctor</td>
+                <td><button class="delete-btn">Delete User</button></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
