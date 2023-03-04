@@ -2,49 +2,11 @@
 <html>
 <head>
 	<title>Record Test/Treatment Prescribes</title>
-	<style>
-		body {
-			font-family: Arial, sans-serif;
-		}
-		h1 {
-			text-align: center;
-		}
-		form {
-			margin: 0 auto;
-			max-width: 600px;
-		}
-		label {
-			display: block;
-			margin-bottom: 10px;
-			font-weight: bold;
-		}
-		input[type="text"],
-		input[type="number"] {
-			display: block;
-			margin-bottom: 20px;
-			padding: 10px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			width: 100%;
-			box-sizing: border-box;
-			font-size: 16px;
-		}
-		input[type="submit"] {
-			background-color: #4CAF50;
-			color: #fff;
-			border: none;
-			border-radius: 5px;
-			padding: 10px 20px;
-			font-size: 16px;
-			cursor: pointer;
-		}
-		input[type="submit"]:hover {
-			background-color: #3e8e41;
-		}
-	</style>
+	<link rel="stylesheet" href="./CSS/recordTestTreatstyle.css">
 </head>
 <body>
-	<h1>Record Test/Treatment Prescribes</h1>
+	<div class="panel">Doctor: Test/Treatment</div>
+	<h1 style="margin-top: 80px;">Record Test/Treatment Prescribes</h1>
 	<form action="#" method="post">
 		<label for="patient_id">Patient ID:</label>
 		<input type="text" id="patient_id" name="patient_id" required>
