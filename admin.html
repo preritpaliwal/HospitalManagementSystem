@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>Admin Page</title>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
-			background: linear-gradient(90deg, #C7C5F4, #776BCC);	
+			background: linear-gradient(90deg, #C7C5F4, #776BCC);
 			padding: 20px;
 		}
 
@@ -15,13 +16,27 @@
 			margin-bottom: 20px;
 		}
 
+		.panel {
+			position: absolute;
+			top: 20px;
+			left: 0;
+			padding: 10px;
+			background-color: #4CAF50;
+			color: #fff;
+			font-size: 30px;
+			border-radius: 0 0 10px 0;
+		}
+
+
+
 		form {
 			background-color: #fff;
-			padding: 20px;
+			padding: 30px;
 			border-radius: 5px;
 			box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-			margin-bottom: 20px;
-            margin-bottom: 50px;
+			margin-bottom: 50px;
+			margin-left: 20px;
+			margin-right: 20px;
 		}
 
 		label {
@@ -30,7 +45,9 @@
 			color: #333;
 		}
 
-		input[type="text"], input[type="password"], select {
+		input[type="text"],
+		input[type="password"],
+		select {
 			padding: 10px;
 			width: 100%;
 			border: 1px solid #ccc;
@@ -58,10 +75,11 @@
 		table {
 			border-collapse: collapse;
 			margin-bottom: 20px;
-            width : 100%;
+			width: 100%;
 		}
 
-		th, td {
+		th,
+		td {
 			padding: 10px;
 			text-align: left;
 			border-bottom: 1px solid #ccc;
@@ -87,8 +105,10 @@
 		}
 	</style>
 </head>
+
 <body>
-	<h1 style="margin-top: 30px;">Add New User</h1>
+	<div class="panel">Database Administrator</div>
+	<h1 style="margin-top: 80px;">Add New User</h1>
 	<form>
 		<label for="username">Username:</label>
 		<input type="text" id="username" name="username" required>
@@ -98,7 +118,7 @@
 
 		<label for="type">Role:</label>
 		<select id="type" name="type">
-            <option value="admin">Database Administrator</option>
+			<option value="admin">Database Administrator</option>
 			<option value="front-desk-operator">Front Desk Operator</option>
 			<option value="data-entry-operator">Data Entry Operator</option>
 			<option value="doctor">Doctor</option>
@@ -123,11 +143,12 @@
 				<td><button class="delete-btn">Delete User</button></td>
 			</tr>
 			<tr>
-                <td>Anushka</td>
-                <td>Doctor</td>
-                <td><button class="delete-btn">Delete User</button></td>
-            </tr>
-        </tbody>
-    </table>
+				<td>Anushka</td>
+				<td>Doctor</td>
+				<td><button class="delete-btn">Delete User</button></td>
+			</tr>
+		</tbody>
+	</table>
 </body>
+
 </html>
