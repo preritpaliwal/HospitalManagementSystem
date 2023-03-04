@@ -1,0 +1,100 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(90deg, #C7C5F4, #776BCC);
+    padding: 20px;
+}
+
+.patients-container {
+    margin-top: 80px;
+    width: 48%;
+    padding: 10px;
+    background:  linear-gradient(#5d54a3d1, #C7C5F4);
+}
+
+.calendar-container {
+    margin-top: 80px;
+    margin-left: 10px;
+    width: 48%;
+    padding: 10px;
+    background:  linear-gradient(#5d54a3d1, #C7C5F4);
+}
+
+
+h1 {
+    color: #333333;
+    font-size: 32px;
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+
+.panel {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 30px;
+    border-radius: 0 0 10px 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.patient {
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid rgb(190, 163, 213);
+    margin-bottom: 10px;
+}
+
+.patient:hover {
+    background-color: #5d54a3d1;
+}
+
+.patient.active {
+    background-color: #363061d1;
+}
+
+.patient-details {
+    display: none;
+    color: #ddd;
+    padding-left: 20px;
+}
+
+.patient-header {
+    color: white;
+}
+
+.button-container {
+    text-align: center;
+}
+
+button {
+    margin-right: 10px;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+button:hover{
+    background-color: #45a049;
+}
+
+.temp-calendar {
+    width: 200px;
+    height: 500px;
+}
