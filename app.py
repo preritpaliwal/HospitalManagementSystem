@@ -39,7 +39,18 @@ def hello_world():
 
 @app.route('/admin', methods=["POST", "GET"])
 def admin():
-    return render_template('admin.html')
+    # Query the database and get the list of usernames and types
+    users = [('user1', 'type1'), ('user2', 'type2'), ('user3', 'type3')]
+    return render_template('admin.html', users=users)
+
+@app.route('/adduser', methods=["POST", "GET"])
+def adduser():
+    if request.method == "POST":
+        print(request.form['username'])
+        print(request.form['password'])
+        print(request.form['type'])
+        # Add the user to the database
+    return admin()
 
 if __name__ == '__main__':
     app.run(debug = True)

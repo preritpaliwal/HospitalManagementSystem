@@ -9,7 +9,7 @@
 <body>
 	<div class="panel">Database Administrator</div>
 	<h1 style="margin-top: 80px;">Add New User</h1>
-	<form>
+	<form action="/adduser" method="POST">
 		<label for="username">Username:</label>
 		<input type="text" id="username" name="username" required>
 
@@ -37,16 +37,13 @@
 			</tr>
 		</thead>
 		<tbody>
+			{% for user in users %}
 			<tr>
-				<td>John Doe</td>
-				<td>Front Desk Operator</td>
+				<td>{{ user[0] }}</td>
+				<td>{{ user[1] }}</td>
 				<td><button class="delete-btn">Delete User</button></td>
 			</tr>
-			<tr>
-				<td>Anushka</td>
-				<td>Doctor</td>
-				<td><button class="delete-btn">Delete User</button></td>
-			</tr>
+			{% endfor %}
 		</tbody>
 	</table>
 </body>
