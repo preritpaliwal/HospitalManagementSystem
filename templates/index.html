@@ -6,8 +6,7 @@
 	<title>MedPal - Hospital Management System</title>
 	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css'>
 	<link rel='stylesheet' href='https://use.fontawesome.com/releases/v5.2.0/css/fontawesome.css'>
-	<link rel="stylesheet" href="./CSS/loginstyle.css">
-
+	<link rel="stylesheet" href="{{ url_for('static',filename='/css/loginstyle.css') }}">
 </head>
 
 <body>
@@ -19,18 +18,18 @@
 	<div class="container">
 		<div class="screen">
 			<div class="screen__content">
-				<form class="login">
+				<form class="login" action="/" method="POST">
 					<div class="login__field">
 						<i class="login__icon fas fa-user"></i>
-						<input type="text" class="login__input" placeholder="Username:" required>
+						<input type="text" name="username" class="login__input" placeholder="Username:" required>
 					</div>
 					<div class="login__field">
 						<i class="login__icon fas fa-lock"></i>
-						<input type="password" class="login__input" placeholder="Password:" required>
+						<input type="password" name="password" class="login__input" placeholder="Password:" required>
 					</div>
 					<div class="login__field">
 						<i class="login__icon fas fa-user"></i>
-						<select class="login__input" required>
+						<select class="login__input" name="type" required>
 							<option class="login__input" value="" selected disabled>Choose Role</option>
 							<option class="login__input" value="Front Desk Operator">Front Desk Operator</option>
 							<option class="login__input" value="Data Entry Operator">Data Entry Operator</option>
@@ -43,6 +42,11 @@
 						<i class="button__icon fas fa-chevron-right"></i>
 					</button>
 				</form>
+				{% if flag == 1 %}
+				<div class="alert alert-danger" role="alert">
+					Invalid Credentials
+				</div>
+				{% endif %}
 			</div>
 			<div class="screen__background">
 				<span class="screen__background__shape screen__background__shape4"></span>
