@@ -36,6 +36,23 @@ form {
     color: #776BCC;
 }
 
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
 .option-link {
     color: white;
     text-decoration: none;
@@ -119,3 +136,51 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #45a049;
 }
+
+.btn-schedule {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .btn-schedule:hover {
+    background-color: #3e8e41;
+  }
+
+  .btn-schedule:active {
+    background-color: #2e6c30;
+  }
+
+  .btn-delete {
+    background-color: #f44336;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+
+  .btn-delete:hover {
+    background-color: #d32f2f;
+  }
+
+  .btn-delete:active {
+    background-color: #b71c1c;
+  }
+
+  .scheduled {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .not-scheduled {
+    color: red;
+    font-weight: bold;
+  }
+
+  .hidden {
+    display: none;
+  }
