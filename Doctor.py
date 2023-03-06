@@ -2,8 +2,8 @@
 def fetch_all_patients(cursor, DoctorID, PatientID):
     
     query = f"SELECT * \
-          FROM Undergoes JOIN Patient on (Undergoes.Patient = Patient.ID) \
-          WHERE Doctor = {DoctorID};"
+            FROM Undergoes JOIN Patient on (Undergoes.Patient = Patient.ID) \
+            WHERE Doctor = {DoctorID};"
     
     cursor.execute(query)
     

@@ -30,7 +30,7 @@ def hello_world():
         print(request.form['password'])
         print(request.form['type'])
 
-        user_exits = validate_user(cursor, request.form['username'], request.form['type'], request.form['password'])
+        user_exits = validate_user(cursor, (int) (request.form['username']), request.form['type'], request.form['password'])
         if not user_exits:  
             return render_template('index.html', flag=1)  
         else:       
