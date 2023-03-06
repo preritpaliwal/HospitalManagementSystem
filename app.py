@@ -80,8 +80,11 @@ def frontdesk(function, flag):
         display = 4
     elif function == 'scheduletesttreatment':
         display = 5
-    print(display)
-    return render_template('front_desk_op.html', display=int(display), flag=int(flag))
+    date = ''
+    if display == 4 and flag not in ['0', '1', '2']:
+        date = flag
+        flag = 3
+    return render_template('front_desk_op.html', display=int(display), flag=int(flag), date=date)
 
 @app.route('/registerpatientbutton', methods=["POST", "GET"])
 def registerpatientbutton():
@@ -106,13 +109,52 @@ def registerpatient():
 def admitpatientbutton():
     return redirect('/frontdesk/admitpatient/0')
 
+@app.route('/admitpatient', methods=["POST", "GET"])
+def admitpatient():
+    if request.method == "POST":
+        print(request.form['patient-id'])
+        print(request.form['admit-date'])
+        # Admit the patient in the database
+        patient_not_found = 1
+        if patient_not_found:
+            return redirect('/frontdesk/admitpatient/1')
+        doctor_not_found = 1
+        if doctor_not_found:
+            return redirect('/frontdesk/admitpatient/2')
+    return redirect('/frontdesk/admitpatient/0')
+
 @app.route('/dischargepatientbutton', methods=["POST", "GET"])
 def dischargepatientbutton():
+    return redirect('/frontdesk/dischargepatient/0')
+
+@app.route('/dischargepatient', methods=["POST", "GET"])
+def dischargepatient():
+    if request.method == "POST":
+        print(request.form['patient-id'])
+        print(request.form['discharge-date'])
+        # Discharge the patient in the database
+        patient_not_found = 1
+        if patient_not_found:
+            return redirect('/frontdesk/dischargepatient/1')
     return redirect('/frontdesk/dischargepatient/0')
 
 @app.route('/makeappointmentbutton', methods=["POST", "GET"])
 def makeappointmentbutton():
     return redirect('/frontdesk/makeappointment/0')
+
+@app.route('/makeappointment', methods=["POST", "GET"])
+def makeappointment():
+    if request.method == "POST":
+        print(request.form['patient-id'])
+        print(request.form['doc-id'])
+        # Get appointment date from the database
+        date = '2020-01-01'
+        redir = '/frontdesk/makeappointment/' + date
+        # Make the appointment in the database
+        patient_not_found = 0
+        if patient_not_found:
+            return redirect('/frontdesk/makeappointment/1')
+    return redirect(redir)
 
 @app.route('/scheduletesttreatmentbutton', methods=["POST", "GET"])
 def scheduletesttreatmentbutton():
@@ -158,7 +200,7 @@ def recordmedication():
         if error:
             return redirect('/gotorecordmedication/1')
         # Record the medication in the database
-    return redirect('/gotorecordmedication/0')
+    return redirect('/doctor')
 
 @app.route('/recordtesttreatment', methods=["POST", "GET"])
 def recordtesttreatment():
@@ -170,7 +212,7 @@ def recordtesttreatment():
         if error:
             return redirect('/gotorecordtesttreatment/1')
         # Record the test in the database
-    return redirect('/gotorecordtesttreatment/0')
+    return redirect('/doctor')
 
 if __name__ == '__main__':
     app.run(debug = True)

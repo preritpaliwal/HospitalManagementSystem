@@ -77,7 +77,7 @@
             <div id="Admit Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Admit Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="#" method="post">
+                <form action="/admitpatient" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -86,13 +86,16 @@
 
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                {% endif %}
             </div>
             {% endif %}
             {% if display == 3 %}
             <div id="Discharge Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Discharge Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="#" method="post">
+                <form action="/dischargepatient" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -100,13 +103,16 @@
                     <input type="date" id="discharge-date" name="discharge-date" required>
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                {% endif %}
             </div>
             {% endif %}
             {% if display == 4 %}
             <div id="Make Doctor Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Doctor's Appointment</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="#" method="post">
+                <form action="/makeappointment" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -114,6 +120,15 @@
                     <input type="text" id="doc-id" name="doc-id" required>
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                {% endif %}
+                {% if flag == 2 %}
+                    <h3 style="color: maroon;">Doctor Not Found!</h3>
+                {% endif %}
+                {% if flag == 3 %}
+                    <h3 style="color: greenyellow;">Appointment set to : {{ date }}</h3>
+                {% endif %}
             </div>
             {% endif %}
             {% if display == 5 %}
