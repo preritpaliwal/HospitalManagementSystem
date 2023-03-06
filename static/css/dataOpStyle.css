@@ -71,3 +71,20 @@ input[type="file"]{
 input[type="submit"]:hover {
     background-color: #45a049;
 }
+
+.logout-button {
+    position: absolute;
+    color: #4CAF50;
+    top: 0;
+    right: 0;
+    padding: 10px;
+ }
+
+ .logout-form {
+    background-color: transparent;
+    padding: 0px;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+ }

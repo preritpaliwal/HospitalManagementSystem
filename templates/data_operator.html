@@ -5,6 +5,11 @@
 	<link rel="stylesheet" href="{{ url_for('static',filename='/css/dataOpStyle.css') }}">
 </head>
 <body>
+	<div class="logout-button">
+		<form class="logout-form" action="/logout" method="post">
+			<button type="submit">Logout</button>
+		</form>
+	 </div>
 	<div class="panel">Data Operator</div>
 	<h1 style="margin-top: 80px;">Update Results</h1>
 	<form action="/updateresults" method="post">
@@ -18,5 +23,8 @@
 
 		<input type="submit" value="Submit">
 	</form>
+	{% if flag == 1 %}
+		<h2 style="color: maroon; text-align: center;">Test Not Found</h2>
+	{% endif %}
 </body>
 </html>

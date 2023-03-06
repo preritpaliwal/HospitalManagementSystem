@@ -156,3 +156,10 @@ body {
 	color: #232252;
 	margin-top: 100px;
 }
+
+.logout-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+ }

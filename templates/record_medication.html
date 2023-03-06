@@ -7,7 +7,7 @@
 <body>
 	<div class="panel">Doctor: Medication</div>
 	<h1 style="margin-top: 80px;">Record Medication Prescribed</h1>
-	<form action="/recordmedication" method="post">
+	<form method="POST" onsubmit="return submitForm()">
 		<label for="patient_id">Patient ID:</label>
 		<input type="text" id="patient_id" name="patient_id" required>
 
@@ -22,5 +22,33 @@
 
 		<input type="submit" value="Submit">
 	</form>
+	{% if flag == 1 %}
+		<h2 style="color: maroon; text-align: center;">Error Recording Medication</h2>
+	{% endif %}
+	<script>
+		function submitForm() {
+			// Make a POST request to the server to record the medication
+			fetch('/recordmedication', {
+				method: 'POST',
+				body: new FormData(document.querySelector('form'))
+			})
+			.then(response => {
+				if (response.ok) {
+					// If the response is OK, go back to the previous page
+					window.history.back();
+				} else {
+					// If there is an error, display an error message
+					throw new Error('Error Recording Medication');
+				}
+			})
+			.catch(error => {
+				alert(error.message);
+				return false;
+			});
+
+			// Prevent the form from submitting normally
+			return false;
+		}
+	</script>
 </body>
 </html>

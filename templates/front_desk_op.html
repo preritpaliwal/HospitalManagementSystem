@@ -3,32 +3,52 @@
 
 <head>
     <title>Front Desk Operator</title>
-    <link rel="stylesheet" href="/home/deepsikha/Downloads/HospitalManagementSystem/static/css/front_desk_op_style.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='/css/front_desk_op_style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
 </head>
 
 <body>
+    <div class="logout-button">
+		<form action="/logout" method="post">
+			<button type="submit">Logout</button>
+		</form>
+	 </div>
     <div class="panel">Front Desk Operator</div>
     <div class="container">
         <div class="panel-options">
             <ul>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Register Patient">Register
-                        Patient</a>
-                </li>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Admit Patient">Admit Patient</a>
-                </li>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Discharge Patient">Discharge
-                        Patient</a></li>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Make Doctor Appointment">Make
-                        Doctor's Appointment</a></li>
-                <li class="option-format"><a href="#" style="text-decoration: none;" class="option-link"
-                        data-panel="Make TnT Appointment">Make
-                        Test/Treatment Appointment</a></li>
+                <form class="option-menu" action="/registerpatientbutton">
+                    <li>
+                        <button class="option-format">Register Patient</button>
+                    </li>
+                </form>
+                <form class="option-menu" action="/admitpatientbutton">
+                    <li>
+                        <button class="option-format">Admit Patient</button>
+                    </li>
+                </form>
+                <form class="option-menu" action="/dischargepatientbutton">
+                    <li>
+                        <button class="option-format">Discharge Patient</button>
+                    </li>
+                </form>
+                <form class="option-menu" action="/makeappointmentbutton">
+                    <li>
+                        <button class="option-format">Make Doctor Appointment</button>
+                    </li>
+                </form>
+                <form class="option-menu" action="/scheduletesttreatmentbutton">
+                    <li>
+                        <button class="option-format">Make Test/Treatment Appointmen</button>
+                    </li>
+                </form>
             </ul>
         </div>
         <div class="panel-form">
+            {% if display == 1 %}
             <div id="Register Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Register Patient</h2>
-                <form action="#" method="post">
+                <form class="other-forms" action="/registerpatient" method="post">
                     <label for="patient-name">Patient Name:</label>
                     <input type="text" id="patient-name" name="patient-name" required>
 
@@ -50,24 +70,34 @@
 
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Error Registering Patient!</h3>
+                {% endif %}
             </div>
+            {% endif %} 
+            {% if display == 2 %}                
             <div id="Admit Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Admit Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="#" method="post">
+                <form class="other-forms" action="/admitpatient" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
                     <label for="admit-date">Admit Date:</label>
                     <input type="date" id="admit-date" name="admit-date" required>
-                    
+
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                {% endif %}
             </div>
+            {% endif %}
+            {% if display == 3 %}
             <div id="Discharge Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Discharge Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="#" method="post">
+                <form class="other-forms" action="/dischargepatient" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -75,11 +105,16 @@
                     <input type="date" id="discharge-date" name="discharge-date" required>
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                {% endif %}
             </div>
+            {% endif %}
+            {% if display == 4 %}
             <div id="Make Doctor Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Doctor's Appointment</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="#" method="post">
+                <form class="other-forms" action="/makeappointment" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -87,43 +122,100 @@
                     <input type="text" id="doc-id" name="doc-id" required>
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                {% endif %}
+                {% if flag == 2 %}
+                    <h3 style="color: maroon;">Doctor Not Found!</h3>
+                {% endif %}
+                {% if flag == 3 %}
+                    <h3 style="color: #397c3c;">Appointment set to : {{ date }}</h3>
+                    <button class="btn-schedule" onclick="scheduleAppointment('{{ curdetails }}', '{{ date }}')">Get PDF</button>
+                {% endif %}
+                <script>
+                    function scheduleAppointment(curdetails, date) {
+                        var curdetailArray = curdetails.split(',');
+                        var patientID = curdetailArray[0];
+                        var patientName = curdetailArray[1];
+                        var doctorID = curdetailArray[2];
+                        var doctorName = curdetailArray[3];
+                        console.log(patientID, patientName, doctorID, doctorName, date);
+                        generatePdfA(patientID, patientName, doctorID, doctorName, date);
+                    }
+
+                    function generatePdfA(patientID, patientName, doctorID, doctorName, date) {
+                        var newdoc = new jsPDF();
+                        newdoc.text("Patient ID: " + patientID, 20, 20);
+                        newdoc.text("Patient Name: " + patientName, 20, 30);
+                        newdoc.text("Doctor ID: " + doctorID, 20, 40);
+                        newdoc.text("Doctor Name: " + doctorName, 20, 50);
+                        newdoc.text("Date: " + date, 20, 60);
+                        newdoc.save(patientName+" Appointment.pdf");
+                    }
+                </script>
             </div>
+            {% endif %}
+            {% if display == 5 %}
             <div id="Make TnT Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Test/Treatment Appointment</h2>
-                <h3>(Make sure Patient is Registered first)</h3>
-                <form>
-                    <label for="patient-id">Patient ID:</label>
-                    <input type="text" id="patient-id" name="patient-id" required>
-                    <input type="submit" value="Submit">
-                </form>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Treatment/Test</th>
+                            <th>Doctor</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for test in tests %}
+                        <tr>
+                            <td>{{ test[1] }}</td>
+                            <td>{{ test[3] }}</td>
+                            <td>{{ test[5] }}</td>
+                            <td>
+                                <form action="/scheduletesttreatment" method="post">
+                                    <input type="hidden" name="patient-id" value="{{ test[0] }}">
+                                    <input type="hidden" name="patient-name" value="{{ test[1] }}">
+                                    <input type="hidden" name="test-id" value="{{ test[2] }}">
+                                    <input type="hidden" name="test-treatment" value="{{ test[3] }}">
+                                    <input type="hidden" name="doctor-id" value="{{ test[4] }}">
+                                    <input type="hidden" name="doctor-name" value="{{ test[5] }}">
+                                    <button class="btn-schedule">Schedule</button>
+                                </form>
+                            </td>
+                            <td class="not-scheduled">Not yet Scheduled</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if flag == 1 %}
+                    <button class="btn-schedule" onclick="scheduletesttreatment('{{ curtest }}', '{{ date }}')">Get PDF</button>
+                {% endif %}
+
+                <script>
+                    function scheduletesttreatment(curtest, date) {
+                        var curtestArray = curtest.split(',');
+                        var patientName = curtestArray[0];
+                        var testtreatment = curtestArray[1];
+                        var doctor = curtestArray[2];
+                        generatePdfTT(patientName, testtreatment, doctor, date);
+                    }
+
+                    function generatePdfTT(patientName, testtreatment, doctor, date) {
+                        var doc = new jsPDF();
+                        doc.text("Patient Name: " + patientName, 20, 20);
+                        doc.text("Test/Treatment: " + testtreatment, 20, 30);
+                        doc.text("Doctor: " + doctor, 20, 40);
+                        doc.text("Date: " + date, 20, 50);
+                        doc.save(patientName+" Schedule.pdf");
+                    }
+                </script>
             </div>
+            {% endif %}
         </div>
     </div>
-
-    <script>
-        // Get all option links and form panels
-        const optionLinks = document.querySelectorAll('.option-link');
-        const formPanels = document.querySelectorAll('.form-panel');
-
-        // Add click event listener to each option link parent element
-        optionLinks.forEach(link => {
-            link.parentElement.addEventListener('click', (event) => {
-                // Prevent default link behavior
-                event.preventDefault();
-
-                // Remove active class from all option links and form panels
-                optionLinks.forEach(link => link.classList.remove('active'));
-                formPanels.forEach(panel => panel.classList.remove('active'));
-
-                // Get ID of selected form panel
-                const panelId = link.getAttribute('data-panel');
-
-                // Add active class to selected option link and form panel
-                link.classList.add('active');
-                document.getElementById(panelId).classList.add('active');
-            });
-        });
-    </script>
 </body>
-
 </html>
