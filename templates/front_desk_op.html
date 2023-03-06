@@ -4,10 +4,7 @@
 <head>
     <title>Front Desk Operator</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='/css/front_desk_op_style.css') }}">
-<<<<<<< HEAD
-=======
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
->>>>>>> 1fa3b45e4ec869a8c43493f710464986619428df
 </head>
 
 <body>
@@ -23,15 +20,26 @@
                         <button class="option-format">Register Patient</button>
                     </li>
                 </form>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Admit Patient">Admit Patient</a>
-                </li>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Discharge Patient">Discharge
-                        Patient</a></li>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Make Doctor Appointment">Make
-                        Doctor's Appointment</a></li>
-                <li class="option-format"><a href="#" style="text-decoration: none;" class="option-link"
-                        data-panel="Make TnT Appointment">Make
-                        Test/Treatment Appointment</a></li>
+                <form action="/admitpatientbutton">
+                    <li>
+                        <button class="option-format">Admit Patient</button>
+                    </li>
+                </form>
+                <form action="/dischargepatientbutton">
+                    <li>
+                        <button class="option-format">Discharge Patient</button>
+                    </li>
+                </form>
+                <form action="/makeappointmentbutton">
+                    <li>
+                        <button class="option-format">Make Doctor Appointment</button>
+                    </li>
+                </form>
+                <form action="/scheduletesttreatmentbutton">
+                    <li>
+                        <button class="option-format">Make Test/Treatment Appointmen</button>
+                    </li>
+                </form>
             </ul>
         </div>
         <div class="panel-form">

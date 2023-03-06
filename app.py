@@ -102,6 +102,22 @@ def registerpatient():
         # Register the patient in the database
     return redirect('/frontdesk/registerpatient/0')
 
+@app.route('/admitpatientbutton', methods=["POST", "GET"])
+def admitpatientbutton():
+    return redirect('/frontdesk/admitpatient/0')
+
+@app.route('/dischargepatientbutton', methods=["POST", "GET"])
+def dischargepatientbutton():
+    return redirect('/frontdesk/dischargepatient/0')
+
+@app.route('/makeappointmentbutton', methods=["POST", "GET"])
+def makeappointmentbutton():
+    return redirect('/frontdesk/makeappointment/0')
+
+@app.route('/scheduletesttreatmentbutton', methods=["POST", "GET"])
+def scheduletesttreatmentbutton():
+    return redirect('/frontdesk/scheduletesttreatment/0')
+
 @app.route('/dataentryoperator/<flag>', methods=["POST", "GET"])
 def dataoperator(flag):
     return render_template('data_operator.html', flag=int(flag))
