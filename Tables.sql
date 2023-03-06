@@ -124,4 +124,3 @@ Prescribes (
     FOREIGN KEY (Patient) REFERENCES Patient (ID),
     FOREIGN KEY (Medicine) REFERENCES Medicine (ID)
 );
-
