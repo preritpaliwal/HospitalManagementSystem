@@ -1,9 +1,14 @@
 from flask import Flask, render_template, Response, jsonify, request, redirect
+from Queries import *
+from FrontDeskOp import *
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
 global currentuserid
+
+ssh, connect = setup_Database()
+cursor = connect.cursor()
 
 # prevent cached responses
 
@@ -25,8 +30,8 @@ def hello_world():
         print(request.form['password'])
         print(request.form['type'])
 
-        auth_fail = 0
-        if auth_fail:  
+        user_exits = validate_user(cursor, request.form['username'], request.form['type'], request.form['password'])
+        if not user_exits:  
             return render_template('index.html', flag=1)  
         else:       
             currentuserid = request.form['username']
