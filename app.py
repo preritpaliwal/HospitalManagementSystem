@@ -80,11 +80,11 @@ def frontdesk(function, flag):
         display = 4
     elif function == 'scheduletesttreatment':
         display = 5
-    date = ''
-    if display == 4 and flag not in ['0', '1', '2']:
-        date = flag
-        flag = 3
-    return render_template('front_desk_op.html', display=int(display), flag=int(flag), date=date)
+    tests = []
+    if display == 5:
+        # Get the list of tests and treatments
+        tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
+    return render_template('front_desk_op.html', display=int(display), flag=int(flag), tests=tests)
 
 @app.route('/registerpatientbutton', methods=["POST", "GET"])
 def registerpatientbutton():
@@ -149,16 +149,34 @@ def makeappointment():
         print(request.form['doc-id'])
         # Get appointment date from the database
         date = '2020-01-01'
-        redir = '/frontdesk/makeappointment/' + date
+        # Get patient and doctor details from the database
+        details = ['Patient-id', 'Patient-name', 'Doctor-id', 'Doctor-name']
+        curdetails = details[0] + ',' + details[1] + ',' + details[2] + ',' + details[3]
+        print(type(curdetails), type(details[0]))
         # Make the appointment in the database
         patient_not_found = 0
         if patient_not_found:
             return redirect('/frontdesk/makeappointment/1')
-    return redirect(redir)
+    return render_template('front_desk_op.html', display=4, flag=3, date=date, curdetails=curdetails)
 
 @app.route('/scheduletesttreatmentbutton', methods=["POST", "GET"])
 def scheduletesttreatmentbutton():
     return redirect('/frontdesk/scheduletesttreatment/0')
+
+@app.route('/scheduletesttreatment', methods=["POST", "GET"])
+def scheduletesttreatment():
+    if request.method == "POST":
+        print(request.form['patient-id'])
+        print(request.form['test-id'])
+        print(request.form['doctor-id'])
+        # Schedule the test and treatment in the database
+        # Get appointment date from the database
+        date = '2020-01-01'
+        # Get the list of tests and treatments
+        tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
+        curtest = request.form['patient-name'] + ',' + request.form['test-treatment'] + ',' + request.form['doctor-name'] 
+        print(type(curtest), type(request.form['patient-name']))
+    return render_template('front_desk_op.html', display=5, flag=1, date=date, tests=tests, curtest=curtest)
 
 @app.route('/dataentryoperator/<flag>', methods=["POST", "GET"])
 def dataoperator(flag):
