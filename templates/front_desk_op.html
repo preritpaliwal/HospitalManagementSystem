@@ -71,7 +71,10 @@
                     <input type="submit" value="Submit">
                 </form>
                 {% if flag == 1 %}
-                    <h3 style="color: maroon;">Error Registering Patient!</h3>
+                    <h3 style="color: maroon; text-align: center" > Patient Already Exists!</h3>
+                    <!-- <script> -->
+                        <!-- alert("Error Registering Patient!"); -->
+                    <!-- </script> -->
                 {% endif %}
             </div>
             {% endif %} 
@@ -84,7 +87,7 @@
                     <input type="text" id="patient-id" name="patient-id" required>
 
                     <label for="admit-date">Admit Date:</label>
-                    <input type="date" id="admit-date" name="admit-date" required>
+                    <input type="date" id="admit-date" name="admit-date">
 
                     <input type="submit" value="Submit">
                 </form>
@@ -102,7 +105,7 @@
                     <input type="text" id="patient-id" name="patient-id" required>
 
                     <label for="discharge-date">Discharge Date:</label>
-                    <input type="date" id="discharge-date" name="discharge-date" required>
+                    <input type="date" id="discharge-date" name="discharge-date" >
                     <input type="submit" value="Submit">
                 </form>
                 {% if flag == 1 %}

@@ -8,7 +8,7 @@ from DataEntryOp import *
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-global currentuserid
+currentuserid = -1
 
 ssh, connect = setup_Database()
 cursor = connect.cursor()
@@ -24,8 +24,6 @@ if app.config["DEBUG"]:
         return response
 
 # Routes    
-users = [('user1', 'type1'), ('user2', 'type2'), ('user3', 'type3')]
-
 @app.route('/', methods=["POST", "GET"])
 def hello_world():
     if request.method == "POST":
@@ -37,7 +35,10 @@ def hello_world():
         if not user_exits:  
             return render_template('index.html', flag=1)  
         else:       
-            currentuserid = request.form['username']
+            global currentuserid
+            currentuserid = (int) (request.form['username'])
+            print(currentuserid)
+            
             if(request.form['type'] == 'Database Administrator'):
                 return redirect('/admin/0')
             elif(request.form['type'] == 'Front Desk Operator'):
@@ -98,8 +99,7 @@ def frontdesk(function, flag):
         display = 5
     tests = []
     if display == 5:
-        # Get the list of tests and treatments
-        tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
+        tests = unscheduled_TT(cursor)
     return render_template('front_desk_op.html', display=int(display), flag=int(flag), tests=tests)
 
 @app.route('/registerpatientbutton', methods=["POST", "GET"])
@@ -115,10 +115,14 @@ def registerpatient():
         print(request.form['patient-email'])
         print(request.form['patient-address'])
         print(request.form['patient-ins'])
-        error = 0
-        if error:
+        
+        not_error = register_patient(cursor, request.form['patient-name'],
+                                     request.form['patient-age'], request.form['patient-phone'], 
+                                     request.form['patient-email'], 
+                                     request.form['patient-address'], request.form['patient-ins'])
+        
+        if not not_error:
             return redirect('/frontdesk/registerpatient/1')
-        # Register the patient in the database
     return redirect('/frontdesk/registerpatient/0')
 
 @app.route('/admitpatientbutton', methods=["POST", "GET"])
@@ -130,8 +134,8 @@ def admitpatient():
     if request.method == "POST":
         print(request.form['patient-id'])
         print(request.form['admit-date'])
-        # Admit the patient in the database
-        patient_not_found = 1
+        
+        patient_not_found = not admit_patient(cursor, request.form['patient-id'], request.form['admit-date'])
         if patient_not_found:
             return redirect('/frontdesk/admitpatient/1')
         doctor_not_found = 1
@@ -148,8 +152,8 @@ def dischargepatient():
     if request.method == "POST":
         print(request.form['patient-id'])
         print(request.form['discharge-date'])
-        # Discharge the patient in the database
-        patient_not_found = 1
+
+        patient_not_found = not discharge_patient(cursor, request.form['patient-id'], request.form['discharge-date'])
         if patient_not_found:
             return redirect('/frontdesk/dischargepatient/1')
     return redirect('/frontdesk/dischargepatient/0')
@@ -158,6 +162,7 @@ def dischargepatient():
 def makeappointmentbutton():
     return redirect('/frontdesk/makeappointment/0')
 
+# TODO - Implement Scheduling & connect to backend
 @app.route('/makeappointment', methods=["POST", "GET"])
 def makeappointment():
     if request.method == "POST":
@@ -179,6 +184,7 @@ def makeappointment():
 def scheduletesttreatmentbutton():
     return redirect('/frontdesk/scheduletesttreatment/0')
 
+# TODO - Implement Scheduling & connect to backend
 @app.route('/scheduletesttreatment', methods=["POST", "GET"])
 def scheduletesttreatment():
     if request.method == "POST":
@@ -203,16 +209,15 @@ def updateresults():
     if request.method == "POST":
         print(request.form['test-id'])
         print(request.form['results'])
-        # Update the results in the database
-        test_not_found = 1
+        
+        test_not_found = not update_result(cursor, request.form['test-id'], request.form['results'])
         if test_not_found:
             return redirect('/dataentryoperator/1')
     return redirect('/dataentryoperator/0')
 
 @app.route('/doctor', methods=["POST", "GET"])
 def doctor():
-    # Query the database and get the list of patients
-    patients = [('1', 'patient1', '20', '293298329', 'pat1@gmail.com', 'Surat, India', '1234567890'), ('2', 'patient2', '20', '945453345', 'pat2@gmail.com', 'Surat, India', '1234567890'), ('3', 'patient3', '20', '293298329', 'pat3@gmail.com', 'Surat, India', '1234567890')]
+    patients = fetch_all_patients(cursor, currentuserid)
     return render_template('doctor.html', patients=patients)
 
 @app.route('/gotorecordmedication/<flag>', methods=["POST", "GET"])
@@ -230,10 +235,10 @@ def recordmedication():
         print(request.form['medication_id'])
         print(request.form['dosage'])
         print(request.form['date'])
-        error = 0
-        if error:
-            return redirect('/gotorecordmedication/1')
-        # Record the medication in the database
+        print(request.form['duration'])
+        
+        prescribe_medicine(cursor, currentuserid, request.form['patient_id'], request.form['medication_id'], request.form['dosage'], request.form['duration'], request.form['date'])
+        
     return redirect('/doctor')
 
 @app.route('/recordtesttreatment', methods=["POST", "GET"])
@@ -242,10 +247,8 @@ def recordtesttreatment():
         print(request.form['patient_id'])
         print(request.form['test_treatment_id'])
         print(request.form['doctor_id'])
-        error = 0
-        if error:
-            return redirect('/gotorecordtesttreatment/1')
-        # Record the test in the database
+        
+    prescribe_test_treatment(cursor,request.form['test_treatment_id'],request.form['doctor_id'], request.form['patient_id'] )
     return redirect('/doctor')
 
 @app.route('/viewmedicalhistory', methods=["POST", "GET"])

@@ -143,7 +143,7 @@ def Initialise_Tables(cursor):
     
     query = """
     
-    INSERT INTO Login_Table VALUES (1, 'Front Desk User', 'Vibhu');
+    INSERT INTO Login_Table VALUES (1, 'Front Desk Operator', 'Vibhu');
     INSERT INTO Login_Table VALUES (2, 'Data Entry Operator','Prerit');
     INSERT INTO Login_Table VALUES (3, 'Doctor', 'Deepsikha');
     INSERT INTO Login_Table VALUES (4, 'Doctor', 'Anushka');
@@ -157,9 +157,9 @@ def Initialise_Tables(cursor):
     INSERT INTO Room VALUES ('A-103', 2, 3);
     INSERT INTO Room VALUES ('A-104', 3, 3);
 
-    INSERT INTO Patient(Name, Phone, Email, Address, InsuranceID) VALUES ( 'Vibhu', '1111111111', 'vibhuyadav41002@gmail.com', 'Addressssssss', '12345');
-    INSERT INTO Patient(Name, Phone, Email, Address, InsuranceID) VALUES ( 'Prerit', '1111111112', 'prerit@gmail.com', 'Addressssssss', '12346');
-    INSERT INTO Patient(Name, Phone, Email, Address, InsuranceID) VALUES ( 'Umika', '1111111113', 'umika@gmail.com', 'Addressssssss', '12347');
+    INSERT INTO Patient(Name, Age, Phone, Email, Address, InsuranceID) VALUES ( 'Vibhu',20, '1111111111', 'vibhuyadav41002@gmail.com', 'Addressssssss', '12345');
+    INSERT INTO Patient(Name, Age, Phone, Email, Address, InsuranceID) VALUES ( 'Prerit',5, '1111111112', 'prerit@gmail.com', 'Addressssssss', '12346');
+    INSERT INTO Patient(Name, Age, Phone, Email, Address, InsuranceID) VALUES ( 'Umika',40, '1111111113', 'umika@gmail.com', 'Addressssssss', '12347');
 
     INSERT INTO Test_Treatment VALUES ("ABC123", "Test1", 50000, "Test");
     INSERT INTO Test_Treatment VALUES ("ABC456", "Test2", 3000, "Test");
@@ -184,13 +184,15 @@ def Initialise_Tables(cursor):
     INSERT INTO Medicine (Name, Manufacturer, Price) VALUES ('Azithromycin', 'Sun Pharma', 50);
     INSERT INTO Medicine (Name, Manufacturer, Price) VALUES ('Cetrizine', 'Cipla', 10);
 
-    INSERT INTO Prescribes (Patient, Medicine, Dosage, Duration, dt) VALUES (1, 3, '1-1-0' , 5 , '2023-03-04');
-    INSERT INTO Prescribes (Patient, Medicine, Dosage, Duration, dt) VALUES (2, 1, '1-0-0' , 5 , '2023-03-04');
-    INSERT INTO Prescribes (Patient, Medicine, Dosage, Duration, dt) VALUES (2, 2, '1-0-0' , 5 , '2023-03-04');
-    INSERT INTO Prescribes (Patient, Medicine, Dosage, Duration, dt) VALUES (3, 1, '1-0-0' , 5 , '2023-03-04'); 
+    INSERT INTO Prescribes (Patient,Doctor, Medicine, Dosage, Duration, dt) VALUES (1,3, 3, '1-1-0' , 5 , '2023-03-04');
+    INSERT INTO Prescribes (Patient,Doctor, Medicine, Dosage, Duration, dt) VALUES (2,4, 1, '1-0-0' , 5 , '2023-03-04');
+    INSERT INTO Prescribes (Patient,Doctor, Medicine, Dosage, Duration, dt) VALUES (2,4, 2, '1-0-0' , 5 , '2023-03-04');
+    INSERT INTO Prescribes (Patient,Doctor, Medicine, Dosage, Duration, dt) VALUES (3,3, 1, '1-0-0' , 5 , '2023-03-04'); 
     """
     
     query = format_sql(query)
+    
+    return query
     
 def Drop_Tables(cursor):
 
