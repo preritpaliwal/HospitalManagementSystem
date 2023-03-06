@@ -4,6 +4,10 @@
 <head>
     <title>Front Desk Operator</title>
     <link rel="stylesheet" href="{{ url_for('static',filename='/css/front_desk_op_style.css') }}">
+<<<<<<< HEAD
+=======
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+>>>>>>> 1fa3b45e4ec869a8c43493f710464986619428df
 </head>
 
 <body>
@@ -107,12 +111,83 @@
             {% if display == 5 %}
             <div id="Make TnT Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Test/Treatment Appointment</h2>
-                <h3>(Make sure Patient is Registered first)</h3>
+                <!-- <h3>(Make sure Patient is Registered first)</h3>
                 <form>
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
                     <input type="submit" value="Submit">
-                </form>
+                </form> -->
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Patient Name</th>
+                            <th>Age</th>
+                            <th>Gender</th>
+                            <th>Appointment Date</th>
+                            <th>Action</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>John Doe</td>
+                            <td>35</td>
+                            <td>Male</td>
+                            <td>05/03/2023</td>
+                            <td>
+                                <button class="btn-schedule" onclick="scheduleAppointment(this)">Schedule</button>
+                                <button class="btn-delete hidden" onclick="deleteAppointment(this)">Delete</button>
+                            </td>
+                            <td class="not-scheduled">Not yet Scheduled</td>
+                        </tr>
+                        <tr>
+                            <td>Jane Smith</td>
+                            <td>28</td>
+                            <td>Female</td>
+                            <td>06/03/2023</td>
+                            <td>
+                                <button class="btn-schedule" onclick="scheduleAppointment(this)">Schedule</button>
+                                <button class="btn-delete hidden" onclick="deleteAppointment(this)">Delete</button>
+                            </td>
+                            <td class="not-scheduled">Not yet Scheduled</td>
+                        </tr>
+                        <!-- Add more rows as needed -->
+                    </tbody>
+                </table>
+
+                <div id="scheduled"></div>
+
+                <script>
+                    function scheduleAppointment(button) {
+                        var row = button.parentNode.parentNode;
+                        var patientName = row.cells[0].textContent;
+                        var age = row.cells[1].textContent;
+                        var gender = row.cells[2].textContent;
+                        var appointmentDate = row.cells[3].textContent;
+
+                        generatePdf(patientName, age, gender, appointmentDate);
+
+                        row.remove();
+                    }
+
+                    function generatePdf(patientName, age, gender, appointmentDate) {
+                        var doc = new jsPDF();
+                        doc.text("Patient Name: " + patientName, 20, 20);
+                        doc.text("Age: " + age, 20, 30);
+                        doc.text("Gender: " + gender, 20, 40);
+                        doc.text("Appointment Date: " + appointmentDate, 20, 50);
+                        doc.save(patientName+" Schedule.pdf");
+                    }
+
+                    function deleteAppointment(button) {
+                        var row = button.parentNode.parentNode;
+                        deleteRow(row);
+                    }
+
+                    function deleteRow(row) {
+                        row.remove();
+                    }
+                </script>
             </div>
             {% endif %}
         </div>
