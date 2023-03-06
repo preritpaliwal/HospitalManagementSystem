@@ -1,6 +1,9 @@
 from flask import Flask, render_template, Response, jsonify, request, redirect
 from Queries import *
 from FrontDeskOp import *
+from DbAdmin import *
+from Doctor import *
+from DataEntryOp import *
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -54,6 +57,7 @@ def logout():
 @app.route('/admin/<flag>', methods=["POST", "GET"])
 def admin(flag):
     # Query the database and get the list of usernames and types
+    users = fetch_users(cursor)
     return render_template('admin.html', users=users , flag=int(flag))
 
 @app.route('/adduser', methods=["POST", "GET"])
@@ -62,21 +66,21 @@ def adduser():
         print(request.form['username'])
         print(request.form['password'])
         print(request.form['type'])
-        error = 1
-        if error:
+        
+        ret = add_user(cursor, request.form['username'],request.form['type'], request.form['password'])
+        
+        if not ret:
             return redirect('/admin/1')
-        # Add the user to the database
-        users.append((request.form['username'], request.form['type']))
+        
     return redirect('/admin/0')
 
 @app.route('/deleteuser', methods=["POST", "GET"])
 def deleteuser():
     if request.method == "POST":
         print(request.form['username_to_delete'])
-        # Delete the user from the database
-        for user in users:
-            if user[0] == request.form['username_to_delete']:
-                users.remove(user)
+        
+    delete_user(cursor,request.form['username_to_delete'])
+        
     return redirect('/admin/0')
 
 @app.route('/frontdesk/<function>/<flag>', methods=["POST", "GET"])

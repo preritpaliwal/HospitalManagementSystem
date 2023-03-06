@@ -143,8 +143,8 @@ def Initialise_Tables(cursor):
     
     query = """
     
-    INSERT INTO Login_Table VALUES (1, 'Front_Desk_User', 'Vibhu');
-    INSERT INTO Login_Table VALUES (2, 'Data_Entry_Operator','Prerit');
+    INSERT INTO Login_Table VALUES (1, 'Front Desk User', 'Vibhu');
+    INSERT INTO Login_Table VALUES (2, 'Data Entry Operator','Prerit');
     INSERT INTO Login_Table VALUES (3, 'Doctor', 'Deepsikha');
     INSERT INTO Login_Table VALUES (4, 'Doctor', 'Anushka');
     INSERT INTO Login_Table VALUES (5, 'Admin', 'Umika');
