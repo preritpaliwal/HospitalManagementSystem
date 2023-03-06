@@ -17,27 +17,27 @@
     <div class="container">
         <div class="panel-options">
             <ul>
-                <form action="/registerpatientbutton">
+                <form class="option-menu" action="/registerpatientbutton">
                     <li>
                         <button class="option-format">Register Patient</button>
                     </li>
                 </form>
-                <form action="/admitpatientbutton">
+                <form class="option-menu" action="/admitpatientbutton">
                     <li>
                         <button class="option-format">Admit Patient</button>
                     </li>
                 </form>
-                <form action="/dischargepatientbutton">
+                <form class="option-menu" action="/dischargepatientbutton">
                     <li>
                         <button class="option-format">Discharge Patient</button>
                     </li>
                 </form>
-                <form action="/makeappointmentbutton">
+                <form class="option-menu" action="/makeappointmentbutton">
                     <li>
                         <button class="option-format">Make Doctor Appointment</button>
                     </li>
                 </form>
-                <form action="/scheduletesttreatmentbutton">
+                <form class="option-menu" action="/scheduletesttreatmentbutton">
                     <li>
                         <button class="option-format">Make Test/Treatment Appointmen</button>
                     </li>
@@ -48,7 +48,7 @@
             {% if display == 1 %}
             <div id="Register Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Register Patient</h2>
-                <form action="/registerpatient" method="post">
+                <form class="other-forms" action="/registerpatient" method="post">
                     <label for="patient-name">Patient Name:</label>
                     <input type="text" id="patient-name" name="patient-name" required>
 
@@ -79,7 +79,7 @@
             <div id="Admit Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Admit Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="/admitpatient" method="post">
+                <form class="other-forms" action="/admitpatient" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -97,7 +97,7 @@
             <div id="Discharge Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Discharge Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="/dischargepatient" method="post">
+                <form class="other-forms" action="/dischargepatient" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -114,7 +114,7 @@
             <div id="Make Doctor Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Doctor's Appointment</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
-                <form action="/makeappointment" method="post">
+                <form class="other-forms" action="/makeappointment" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
 
@@ -129,7 +129,7 @@
                     <h3 style="color: maroon;">Doctor Not Found!</h3>
                 {% endif %}
                 {% if flag == 3 %}
-                    <h3 style="color: greenyellow;">Appointment set to : {{ date }}</h3>
+                    <h3 style="color: #397c3c;">Appointment set to : {{ date }}</h3>
                     <button class="btn-schedule" onclick="scheduleAppointment('{{ curdetails }}', '{{ date }}')">Get PDF</button>
                 {% endif %}
                 <script>
