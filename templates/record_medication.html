@@ -5,9 +5,14 @@
 	<link rel="stylesheet" href="{{ url_for('static',filename='/css/recordMedicationstyle.css') }}">
 </head>
 <body>
+	<div class="logout-button">
+		<form action="/logout" method="post">
+			<button type="submit">Logout</button>
+		</form>
+	 </div>
 	<div class="panel">Doctor: Medication</div>
 	<h1 style="margin-top: 80px;">Record Medication Prescribed</h1>
-	<form method="POST" onsubmit="return submitForm()">
+	<form class="input-form" method="POST" onsubmit="return submitForm()">
 		<label for="patient_id">Patient ID:</label>
 		<input type="text" id="patient_id" name="patient_id" required>
 

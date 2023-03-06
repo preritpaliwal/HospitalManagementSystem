@@ -1,10 +1,10 @@
 body {
     font-family: Arial, sans-serif;
-    background: linear-gradient(90deg, #C7C5F4, #776BCC);	
+    background: linear-gradient(90deg, #C7C5F4, #776BCC);
     padding: 20px;
 }
 
-form {
+.input-form {
     background-color: #fff;
     padding: 30px;
     border-radius: 5px;
@@ -30,6 +30,7 @@ label {
     margin-bottom: 10px;
     color: #333;
 }
+
 input[type="text"],
 input[type="number"],
 input[type="date"],
@@ -43,6 +44,7 @@ select {
     color: #333;
     box-sizing: border-box;
 }
+
 input[type="submit"] {
     background-color: #4CAF50;
     color: #fff;
@@ -52,8 +54,25 @@ input[type="submit"] {
     font-size: 16px;
     cursor: pointer;
 }
+
 input[type="submit"]:hover {
     background-color: #3e8e41;
+}
+
+button {
+    margin-right: 10px;
+    margin-top: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 3px;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #45a049;
 }
 
 .logout-button {
@@ -61,4 +80,4 @@ input[type="submit"]:hover {
     top: 0;
     right: 0;
     padding: 10px;
- }
+}
