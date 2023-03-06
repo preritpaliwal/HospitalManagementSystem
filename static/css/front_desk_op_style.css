@@ -80,15 +80,15 @@ form {
     padding: 20px;
 }
 
-/* Hide all form panels by default */
+/* Hide all form panels by default
 .form-panel {
     display: none;
 }
 
 /* Show selected form panel */
-.form-panel.active {
+/* .form-panel.active {
     display: block;
-}
+} */ 
 
 input[type="text"],
 input[type="date"],

@@ -3,7 +3,7 @@
 
 <head>
     <title>Front Desk Operator</title>
-    <link rel="stylesheet" href="/home/deepsikha/Downloads/HospitalManagementSystem/static/css/front_desk_op_style.css">
+    <link rel="stylesheet" href="{{ url_for('static',filename='/css/front_desk_op_style.css') }}">
 </head>
 
 <body>
@@ -11,9 +11,14 @@
     <div class="container">
         <div class="panel-options">
             <ul>
-                <li class="option-format"><a href="#" class="option-link" data-panel="Register Patient">Register
+                <!-- <li class="option-format"><a href="#" class="option-link" data-panel="Register Patient">Register
                         Patient</a>
-                </li>
+                </li> -->
+                <form action="/registerpatientbutton">
+                    <li>
+                        <button class="option-format">Register Patient</button>
+                    </li>
+                </form>
                 <li class="option-format"><a href="#" class="option-link" data-panel="Admit Patient">Admit Patient</a>
                 </li>
                 <li class="option-format"><a href="#" class="option-link" data-panel="Discharge Patient">Discharge
@@ -26,9 +31,10 @@
             </ul>
         </div>
         <div class="panel-form">
+            {% if display == 1 %}
             <div id="Register Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Register Patient</h2>
-                <form action="#" method="post">
+                <form action="/registerpatient" method="post">
                     <label for="patient-name">Patient Name:</label>
                     <input type="text" id="patient-name" name="patient-name" required>
 
@@ -50,7 +56,12 @@
 
                     <input type="submit" value="Submit">
                 </form>
+                {% if flag == 1 %}
+                    <h3 style="color: maroon;">Error Registering Patient!</h3>
+                {% endif %}
             </div>
+            {% endif %} 
+            {% if display == 2 %}                
             <div id="Admit Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Admit Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
@@ -60,10 +71,12 @@
 
                     <label for="admit-date">Admit Date:</label>
                     <input type="date" id="admit-date" name="admit-date" required>
-                    
+
                     <input type="submit" value="Submit">
                 </form>
             </div>
+            {% endif %}
+            {% if display == 3 %}
             <div id="Discharge Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Discharge Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
@@ -76,6 +89,8 @@
                     <input type="submit" value="Submit">
                 </form>
             </div>
+            {% endif %}
+            {% if display == 4 %}
             <div id="Make Doctor Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Doctor's Appointment</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
@@ -88,6 +103,8 @@
                     <input type="submit" value="Submit">
                 </form>
             </div>
+            {% endif %}
+            {% if display == 5 %}
             <div id="Make TnT Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Test/Treatment Appointment</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
@@ -97,10 +114,11 @@
                     <input type="submit" value="Submit">
                 </form>
             </div>
+            {% endif %}
         </div>
     </div>
 
-    <script>
+    <!-- <script>
         // Get all option links and form panels
         const optionLinks = document.querySelectorAll('.option-link');
         const formPanels = document.querySelectorAll('.form-panel');
@@ -123,7 +141,7 @@
                 document.getElementById(panelId).classList.add('active');
             });
         });
-    </script>
+    </script> -->
 </body>
 
 </html>
