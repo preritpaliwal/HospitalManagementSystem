@@ -1,3 +1,5 @@
+from tabulate import tabulate
+
 # TODO : Implement a measure to prevent SQL Injection
 def validate_user(cursor, Id, Type, Password):
     """
@@ -8,15 +10,18 @@ def validate_user(cursor, Id, Type, Password):
     query = f"SELECT * \
           FROM Login_Table \
           WHERE ID = '{Id}' and Type = '{Type}' and Password = '{Password}'; "
+          
+    print(query)
 
     cursor.execute(query)
 
     columns = [column[0] for column in cursor.description]
     rows = cursor.fetchall()
-    # print( tabulate(rows , headers = columns, tablefmt= 'psql' ) )
+    print( tabulate(rows , headers = columns, tablefmt= 'psql' ) )
 
     # TODO : Implement post login functionality
     if (Id, Type, Password) in rows:
+        print("Match Found")
         return True
     return False
 
