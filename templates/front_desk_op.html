@@ -12,9 +12,6 @@
     <div class="container">
         <div class="panel-options">
             <ul>
-                <!-- <li class="option-format"><a href="#" class="option-link" data-panel="Register Patient">Register
-                        Patient</a>
-                </li> -->
                 <form action="/registerpatientbutton">
                     <li>
                         <button class="option-format">Register Patient</button>
@@ -128,118 +125,92 @@
                 {% endif %}
                 {% if flag == 3 %}
                     <h3 style="color: greenyellow;">Appointment set to : {{ date }}</h3>
+                    <button class="btn-schedule" onclick="scheduleAppointment('{{ curdetails }}', '{{ date }}')">Get PDF</button>
                 {% endif %}
+                <script>
+                    function scheduleAppointment(curdetails, date) {
+                        var curdetailArray = curdetails.split(',');
+                        var patientID = curdetailArray[0];
+                        var patientName = curdetailArray[1];
+                        var doctorID = curdetailArray[2];
+                        var doctorName = curdetailArray[3];
+                        console.log(patientID, patientName, doctorID, doctorName, date);
+                        generatePdfA(patientID, patientName, doctorID, doctorName, date);
+                    }
+
+                    function generatePdfA(patientID, patientName, doctorID, doctorName, date) {
+                        var newdoc = new jsPDF();
+                        newdoc.text("Patient ID: " + patientID, 20, 20);
+                        newdoc.text("Patient Name: " + patientName, 20, 30);
+                        newdoc.text("Doctor ID: " + doctorID, 20, 40);
+                        newdoc.text("Doctor Name: " + doctorName, 20, 50);
+                        newdoc.text("Date: " + date, 20, 60);
+                        newdoc.save(patientName+" Appointment.pdf");
+                    }
+                </script>
             </div>
             {% endif %}
             {% if display == 5 %}
             <div id="Make TnT Appointment" class="form-panel">
                 <h2 style="margin-top: 80px;">Make Test/Treatment Appointment</h2>
-                <!-- <h3>(Make sure Patient is Registered first)</h3>
-                <form>
-                    <label for="patient-id">Patient ID:</label>
-                    <input type="text" id="patient-id" name="patient-id" required>
-                    <input type="submit" value="Submit">
-                </form> -->
                 <table>
                     <thead>
                         <tr>
                             <th>Patient Name</th>
-                            <th>Age</th>
-                            <th>Gender</th>
-                            <th>Appointment Date</th>
+                            <th>Treatment/Test</th>
+                            <th>Doctor</th>
                             <th>Action</th>
                             <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
+                        {% for test in tests %}
                         <tr>
-                            <td>John Doe</td>
-                            <td>35</td>
-                            <td>Male</td>
-                            <td>05/03/2023</td>
+                            <td>{{ test[1] }}</td>
+                            <td>{{ test[3] }}</td>
+                            <td>{{ test[5] }}</td>
                             <td>
-                                <button class="btn-schedule" onclick="scheduleAppointment(this)">Schedule</button>
-                                <button class="btn-delete hidden" onclick="deleteAppointment(this)">Delete</button>
+                                <form action="/scheduletesttreatment" method="post">
+                                    <input type="hidden" name="patient-id" value="{{ test[0] }}">
+                                    <input type="hidden" name="patient-name" value="{{ test[1] }}">
+                                    <input type="hidden" name="test-id" value="{{ test[2] }}">
+                                    <input type="hidden" name="test-treatment" value="{{ test[3] }}">
+                                    <input type="hidden" name="doctor-id" value="{{ test[4] }}">
+                                    <input type="hidden" name="doctor-name" value="{{ test[5] }}">
+                                    <button class="btn-schedule">Schedule</button>
+                                </form>
                             </td>
                             <td class="not-scheduled">Not yet Scheduled</td>
                         </tr>
-                        <tr>
-                            <td>Jane Smith</td>
-                            <td>28</td>
-                            <td>Female</td>
-                            <td>06/03/2023</td>
-                            <td>
-                                <button class="btn-schedule" onclick="scheduleAppointment(this)">Schedule</button>
-                                <button class="btn-delete hidden" onclick="deleteAppointment(this)">Delete</button>
-                            </td>
-                            <td class="not-scheduled">Not yet Scheduled</td>
-                        </tr>
-                        <!-- Add more rows as needed -->
+                        {% endfor %}
                     </tbody>
                 </table>
 
-                <div id="scheduled"></div>
+                {% if flag == 1 %}
+                    <button class="btn-schedule" onclick="scheduletesttreatment('{{ curtest }}', '{{ date }}')">Get PDF</button>
+                {% endif %}
 
                 <script>
-                    function scheduleAppointment(button) {
-                        var row = button.parentNode.parentNode;
-                        var patientName = row.cells[0].textContent;
-                        var age = row.cells[1].textContent;
-                        var gender = row.cells[2].textContent;
-                        var appointmentDate = row.cells[3].textContent;
-
-                        generatePdf(patientName, age, gender, appointmentDate);
-
-                        row.remove();
+                    function scheduletesttreatment(curtest, date) {
+                        var curtestArray = curtest.split(',');
+                        var patientName = curtestArray[0];
+                        var testtreatment = curtestArray[1];
+                        var doctor = curtestArray[2];
+                        generatePdfTT(patientName, testtreatment, doctor, date);
                     }
 
-                    function generatePdf(patientName, age, gender, appointmentDate) {
+                    function generatePdfTT(patientName, testtreatment, doctor, date) {
                         var doc = new jsPDF();
                         doc.text("Patient Name: " + patientName, 20, 20);
-                        doc.text("Age: " + age, 20, 30);
-                        doc.text("Gender: " + gender, 20, 40);
-                        doc.text("Appointment Date: " + appointmentDate, 20, 50);
+                        doc.text("Test/Treatment: " + testtreatment, 20, 30);
+                        doc.text("Doctor: " + doctor, 20, 40);
+                        doc.text("Date: " + date, 20, 50);
                         doc.save(patientName+" Schedule.pdf");
-                    }
-
-                    function deleteAppointment(button) {
-                        var row = button.parentNode.parentNode;
-                        deleteRow(row);
-                    }
-
-                    function deleteRow(row) {
-                        row.remove();
                     }
                 </script>
             </div>
             {% endif %}
         </div>
     </div>
-
-    <!-- <script>
-        // Get all option links and form panels
-        const optionLinks = document.querySelectorAll('.option-link');
-        const formPanels = document.querySelectorAll('.form-panel');
-
-        // Add click event listener to each option link parent element
-        optionLinks.forEach(link => {
-            link.parentElement.addEventListener('click', (event) => {
-                // Prevent default link behavior
-                event.preventDefault();
-
-                // Remove active class from all option links and form panels
-                optionLinks.forEach(link => link.classList.remove('active'));
-                formPanels.forEach(panel => panel.classList.remove('active'));
-
-                // Get ID of selected form panel
-                const panelId = link.getAttribute('data-panel');
-
-                // Add active class to selected option link and form panel
-                link.classList.add('active');
-                document.getElementById(panelId).classList.add('active');
-            });
-        });
-    </script> -->
 </body>
-
 </html>
