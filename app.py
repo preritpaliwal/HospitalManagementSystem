@@ -248,5 +248,16 @@ def recordtesttreatment():
         # Record the test in the database
     return redirect('/doctor')
 
+@app.route('/viewmedicalhistory', methods=["POST", "GET"])
+def viewmedicalhistory():
+    if request.method == "POST":
+        print(request.form['patient_id'])
+        # Get the test history from the database
+        tests = [('patient-name', 'test', 'doctor-name', 'date', 'slot', 'results')]
+        # Get the medication history from the database
+        medications = [('patient-name', 'doctor-name', 'medication', 'dosage', 'duration', 'date')]
+    return render_template('view_medical_history.html', tests=tests, medications=medications)
+
+
 if __name__ == '__main__':
     app.run(debug = True)

@@ -3,7 +3,7 @@
 
 <head>
 	<title>Doctor: Patient History</title>
-	<link rel="stylesheet" href="/home/deepsikha/Downloads/HospitalManagementSystem/static/css/medhistory.css">
+	<link rel="stylesheet" href="{{ url_for('static',filename='/css/medhistory.css') }}">
 	<script>
 		function showMedicationHistory() {
 			// Clear contents of test-treatment-history div
