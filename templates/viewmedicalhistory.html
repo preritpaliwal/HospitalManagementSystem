@@ -3,60 +3,7 @@
 
 <head>
 	<title>Doctor: Patient History</title>
-	<link rel="stylesheet" href="{{ url_for('static',filename='/css/medhistory.css') }}">
-	<script>
-		function showMedicationHistory() {
-			// Clear contents of test-treatment-history div
-			document.getElementById("test-treatment-history").innerHTML = "";
-
-			// Get medication history from server (or use static data)
-			var medicationHistory = [
-				{ date: "09/02/2021", medication: "Amoxicillin", reason: "Bacterial infection" },
-				{ date: "02/11/2022", medication: "Ibuprofen", reason: "Muscle pain" },
-				{ date: "21/12/2022", medication: "Lisinopril", reason: "High blood pressure" }
-			];
-
-			// Sort medication history array in reverse chronological order
-			medicationHistory.sort(function (a, b) {
-				var dateA = a.date.split("/").reverse().join("-");
-				var dateB = b.date.split("/").reverse().join("-");
-				return new Date(dateB) - new Date(dateA);
-			});
-
-			// Display medication history in list format
-			var medicationList = "<h2 style='margin-top: 80px;margin-left: 20px;'>Medication History</h2><ul>";
-			for (var i = 0; i < medicationHistory.length; i++) {
-				medicationList += "<li style='padding: 10px; margin: 10px'>" + medicationHistory[i].date + ": " + medicationHistory[i].medication + " (" + medicationHistory[i].duration + ") - " + medicationHistory[i].reason + "</li>";
-			}
-			medicationList += "</ul>";
-			document.getElementById("medication-history").innerHTML = medicationList;
-		}
-
-		function showTestTreatmentHistory() {
-			// Clear contents of medication-history div
-			document.getElementById("medication-history").innerHTML = "";
-
-			// Get test treatment history from server (or use static data)
-			var testTreatmentHistory = [
-				{ date: "09/02/2021", testTreatment: "Blood test", result: "Elevated cholesterol", action: "Dietary and lifestyle changes" },
-				{ date: "21/12/2022", testTreatment: "X-ray", result: "Normal", action: "No treatment needed" }
-			];
-
-			// Sort test treatment history by date in descending order
-			testTreatmentHistory.sort(function (a, b) {
-				var dateA = new Date(a.date.split("/").reverse().join("-"));
-				var dateB = new Date(b.date.split("/").reverse().join("-"));
-				return dateB - dateA;
-			});
-
-			var TnTList = "<h2 style='margin-top: 80px;margin-left: 20px;'>Test &amp; Treatment History</h2><ul>";
-			for (var i = 0; i < testTreatmentHistory.length; i++) {
-				TnTList += "<li style='padding: 10px; margin: 10px'>" + testTreatmentHistory[i].date + "; Test/Treatment: " + testTreatmentHistory[i].testTreatment + "; Result: " + testTreatmentHistory[i].result + "; Action: " + testTreatmentHistory[i].action + "</li>";
-			}
-			document.getElementById("test-treatment-history").innerHTML = TnTList;
-		}
-
-	</script>
+	<link rel="stylesheet" href="/home/deepsikha/Downloads/HospitalManagementSystem/static/css/medhistory.css">
 </head>
 
 <body>
@@ -78,10 +25,62 @@
 				</li>
 			</ul>
 		</div>
-		<div class="history">
+		<div class="panel-form">
 			<div id="medication-history" class="history-section">
+				<h2 style="margin-top: 80px;">Medication History</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Prescription ID</th>
+							<th>Patient ID</th>
+							<th>Doctor ID</th>
+							<th>Medicine</th>
+							<th>Dosage</th>
+							<th>Duration</th>
+							<th>Date</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			<div id="test-treatment-history" class="history-section"></div>
+			<h2 style="margin-top: 80px;">Test & treatment History</h2>
+				<table>
+					<thead>
+						<tr>
+							<th>Test/Treatment ID</th>
+							<th>Test/Treatment Code</th>
+							<th>Patient ID</th>
+							<th>Doctor ID</th>
+							<th>Medicine</th>
+							<th>Date</th>
+							<th>Outcome</th>
+							<th>Image</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>val</td>
+							<td>if any</td>
+						</tr>
+					</tbody>
+				</table>
 		</div>
 	</div>
 </body>
