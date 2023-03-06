@@ -12,36 +12,33 @@
 		<div class="patients-container">
 			<h1 style="color:azure">My Patients</h1>
 			<ul>
+				{% for patient in patients %}
 				<li class="patient">
 					<div class="patient-header">
-						<span class="patient-id">1</span>
-						<span class="patient-name">John Doe</span>
+						<span class="patient-id">{{ patient[0] }}</span>
+						<span class="patient-name">{{ patient[1] }}</span>
 					</div>
 					<div class="patient-details">
-						<p>Address: 123 Main St</p>
-						<p>Phone: (123) 456-7890</p>
-						<p>/*Other details*/</p>
+						<p>Age: {{ patient[2] }}</p>
+						<p>Phone: {{ patient[3] }}</p>
+						<p>Email: {{ patient[4] }}</p>
+						<p>Address: {{ patient[5] }}</p>
+						<p>Insurance: {{ patient[2] }}</p>
 					</div>
 				</li>
-				<li class="patient">
-					<div class="patient-header">
-						<span class="patient-id">2</span>
-						<span class="patient-name">Jane Smith</span>
-					</div>
-					<div class="patient-details">
-						<p>Address: 456 Oak St</p>
-						<p>Phone: (123) 555-7890</p>
-						<p>/*Other details*/</p>
-					</div>
-				</li>
+				{% endfor %}
 			</ul>
 		</div>
 		<div class="calendar-container">
 			<h1 style="color:azure"> My Calendar</h1>
 			<div class="temp-calendar"></div>
 			<div class="button-container">
-				<button>Record Medication Prescribed</button>
-				<button>Record Test/Treatment Prescribed</button>
+				<form action="/gotorecordmedication">
+					<button>Record Medication Prescribed</button>
+				</form>	
+				<form action="/gotorecordtesttreatment">
+					<button>Record Test/Treatment Prescribed</button>
+				</form>		
 			</div>
 		</div>
 	</div>

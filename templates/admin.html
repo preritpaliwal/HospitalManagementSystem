@@ -9,7 +9,7 @@
 <body>
 	<div class="panel">Database Administrator</div>
 	<h1 style="margin-top: 80px;">Add New User</h1>
-	<form action="/adduser" method="POST">
+	<form class="add-form" action="/adduser" method="POST">
 		<label for="username">Username:</label>
 		<input type="text" id="username" name="username" required>
 
@@ -41,7 +41,12 @@
 			<tr>
 				<td>{{ user[0] }}</td>
 				<td>{{ user[1] }}</td>
-				<td><button class="delete-btn">Delete User</button></td>
+				<td>
+					<form method="POST" action="/deleteuser">
+						<input type="hidden" name="username_to_delete" value="{{ user[0] }}">
+						<button class="delete-btn">Delete User</button></td>
+					</form>
+				</td>
 			</tr>
 			{% endfor %}
 		</tbody>
