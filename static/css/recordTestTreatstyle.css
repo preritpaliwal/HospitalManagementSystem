@@ -52,3 +52,10 @@ input[type="submit"] {
 input[type="submit"]:hover {
     background-color: #3e8e41;
 }
+
+.logout-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+ }

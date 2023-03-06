@@ -95,3 +95,10 @@ th {
 .delete-btn:hover {
     background-color: #d32f2f;
 }
+
+.logout-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+ }

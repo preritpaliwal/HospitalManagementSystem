@@ -3,6 +3,8 @@ from flask import Flask, render_template, Response, jsonify, request, redirect
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
+global currentuserid
+
 # prevent cached responses
 
 if app.config["DEBUG"]:
@@ -27,7 +29,6 @@ def hello_world():
         if auth_fail:  
             return render_template('index.html', flag=1)  
         else:       
-            global currentuserid
             currentuserid = request.form['username']
             if(request.form['type'] == 'Database Administrator'):
                 return redirect('/admin/0')
@@ -38,6 +39,12 @@ def hello_world():
             elif(request.form['type'] == 'Doctor'):
                 return redirect('/doctor')
     return render_template('index.html', flag=0)
+
+@app.route('/logout', methods=["POST", "GET"])
+def logout():
+    currentuserid = ''
+    return redirect('/')
+
 
 @app.route('/admin/<flag>', methods=["POST", "GET"])
 def admin(flag):

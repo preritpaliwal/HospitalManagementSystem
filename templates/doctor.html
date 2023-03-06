@@ -7,6 +7,11 @@
 </head>
 
 <body>
+	<div class="logout-button">
+		<form action="/logout" method="post">
+			<button type="submit">Logout</button>
+		</form>
+	 </div>
 	<div class="panel">Doctor: Dashboard</div>
 	<div class="container">
 		<div class="patients-container">
@@ -24,6 +29,10 @@
 						<p>Email: {{ patient[4] }}</p>
 						<p>Address: {{ patient[5] }}</p>
 						<p>Insurance: {{ patient[2] }}</p>
+						<form action="/viewmedicalhistory" method="post"> 
+							<input type="hidden" name="patient_id" value="{{ patient[0] }}">
+							<button>View Patient's Medical History</button>
+						</form>
 					</div>
 				</li>
 				{% endfor %}
