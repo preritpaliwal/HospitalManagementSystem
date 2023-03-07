@@ -214,7 +214,8 @@ def updateresults():
         print(request.form['test-id'])
         print(request.form['results'])
         f = request.files['result-file']
-        filename = secure_filename(f.filename)
+        extension = secure_filename(f.filename).split('.')[-1]
+        filename = request.form['test-id'] + '.' + extension
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         test_not_found = not update_result(cursor, request.form['test-id'], request.form['results'])
         if test_not_found:
