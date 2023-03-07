@@ -3,7 +3,7 @@
 
 <head>
 	<title>Doctor: Patient History</title>
-	<link rel="stylesheet" href="/home/deepsikha/Downloads/HospitalManagementSystem/static/css/medhistory.css">
+	<link rel="stylesheet" href="{{ url_for('static',filename='/css/medhistory.css') }}">
 </head>
 
 <body>
@@ -17,23 +17,28 @@
 		<div class="panel-options">
 			<ul>
 				<li>
-					<button class="option-format" onclick="showMedicationHistory()">Medication History</button>
+					<form action="/medicationhistory" method="post">
+						<input type="hidden" name="patient_id" value="{{ patient_id }}">
+						<button class="option-format" onclick="showMedicationHistory()">Medication History</button>
+					</form>
 				</li>
 				<li>
-					<button class="option-format" onclick="showTestTreatmentHistory()">Test &amp; Treatment
-						History</button>
+					<form action="/testtreatmenthistory" method="post">
+						<input type="hidden" name="patient_id" value="{{ patient_id }}">
+						<button class="option-format" onclick="showTestTreatmentHistory()">Test &amp; TreatmentHistory</button>
+					</form>
 				</li>
 			</ul>
 		</div>
 		<div class="panel-form">
+			{% if flag == 1 %}
 			<div id="medication-history" class="history-section">
 				<h2 style="margin-top: 80px;">Medication History</h2>
 				<table>
 					<thead>
 						<tr>
-							<th>Prescription ID</th>
-							<th>Patient ID</th>
-							<th>Doctor ID</th>
+							<th>Patient Name</th>
+							<th>Doctor Name</th>
 							<th>Medicine</th>
 							<th>Dosage</th>
 							<th>Duration</th>
@@ -41,48 +46,50 @@
 						</tr>
 					</thead>
 					<tbody>
+						{% for medication in medications %}
 						<tr>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
+							<td>{{ medication[0] }}</td>
+							<td>{{ medication[1] }}</td>
+							<td>{{ medication[2] }}</td>
+							<td>{{ medication[3] }}</td>
+							<td>{{ medication[4] }}</td>
+							<td>{{ medication[5] }}</td>
 						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
 			</div>
-			<div id="test-treatment-history" class="history-section"></div>
+			{% endif %}
+			{% if flag == 2 %}
+			<div id="test-treatment-history" class="history-section">
 			<h2 style="margin-top: 80px;">Test & treatment History</h2>
 				<table>
 					<thead>
 						<tr>
-							<th>Test/Treatment ID</th>
+							<th>Patient Name</th>
 							<th>Test/Treatment Code</th>
-							<th>Patient ID</th>
-							<th>Doctor ID</th>
-							<th>Medicine</th>
+							<th>Doctor Name</th>
 							<th>Date</th>
-							<th>Outcome</th>
-							<th>Image</th>
+							<th>Slot</th>
+							<th>Results</th>
 						</tr>
 					</thead>
 					<tbody>
+						{% for test in tests %}
 						<tr>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>val</td>
-							<td>if any</td>
+							<td>{{ test[0] }}</td>
+							<td>{{ test[1] }}</td>
+							<td>{{ test[2] }}</td>
+							<td>{{ test[3] }}</td>
+							<td>{{ test[4] }}</td>
+							<td>{{ test[5] }}</td>
 						</tr>
+						{% endfor %}
 					</tbody>
 				</table>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 </body>
-
 </html>

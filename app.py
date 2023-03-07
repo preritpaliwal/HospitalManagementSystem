@@ -255,11 +255,23 @@ def recordtesttreatment():
 def viewmedicalhistory():
     if request.method == "POST":
         print(request.form['patient_id'])
-        # Get the test history from the database
-        tests = [('patient-name', 'test', 'doctor-name', 'date', 'slot', 'results')]
+    return render_template('viewmedicalhistory.html', patient_id = request.form['patient_id'])
+
+@app.route('/medicationhistory', methods=["POST", "GET"])
+def medicationhistory():
+    if request.method == "POST":
+        print(request.form['patient_id'])
         # Get the medication history from the database
         medications = [('patient-name', 'doctor-name', 'medication', 'dosage', 'duration', 'date')]
-    return render_template('view_medical_history.html', tests=tests, medications=medications)
+    return render_template('viewmedicalhistory.html', medications=medications, flag=1)
+
+@app.route('/testtreatmenthistory', methods=["POST", "GET"])
+def testtreatmenthistory():
+    if request.method == "POST":
+        print(request.form['patient_id'])
+        # Get the test history from the database
+        tests = [('patient-name', 'test', 'doctor-name', 'date', 'slot', 'results')]
+    return render_template('viewmedicalhistory.html', tests=tests, flag=2)
 
 
 if __name__ == '__main__':
