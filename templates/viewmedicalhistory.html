@@ -8,8 +8,11 @@
 
 <body>
 	<div class="logout-button">
-		<form action="/logout" method="post">
+		<form action="/logout" method="post" style="padding: 2px;">
 			<button type="submit">Logout</button>
+		</form>
+		<form action="/doctor" method="post" style="padding: 2px;">
+			<button type="submit">Back</button>
 		</form>
 	</div>
 	<div class="panel">Doctor: Patient's Medical History</div>
@@ -74,18 +77,33 @@
 							<th>Date</th>
 							<th>Slot</th>
 							<th>Results</th>
+							<th>Report</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for test in tests %}
-						<tr>
-							<td>{{ test[0] }}</td>
-							<td>{{ test[1] }}</td>
-							<td>{{ test[2] }}</td>
-							<td>{{ test[3] }}</td>
-							<td>{{ test[4] }}</td>
-							<td>{{ test[5] }}</td>
-						</tr>
+						<tbody class="tests">
+							<tr>
+								<td>{{ test[0] }}</td>
+								<td>{{ test[1] }}</td>
+								<td>{{ test[2] }}</td>
+								<td>{{ test[3] }}</td>
+								<td>{{ test[4] }}</td>
+								<td>{{ test[5] }}</td>
+								<td>
+									<button class="btn btn-primary">View Report</button>
+								</td>
+							</tr>
+							<tr class="test-details" style="text-align: center;">
+								{% if test[7] == 1 %}
+								<td colspan="6">
+									<a target="_blank" href="{{ test[6] }}"><img src="{{ test[6] }}" class="img-rounded" alt="Report" width="500" height="500" ></a>
+								</td>
+								{% else %}
+									<td colspan="6" >No Image Recorded.</td>
+								{% endif %}
+							</tr>
+						</tbody>
 						{% endfor %}
 					</tbody>
 				</table>
@@ -93,5 +111,24 @@
 			{% endif %}
 		</div>
 	</div>
+	<script>
+		const tests = document.querySelectorAll('.tests');
+
+		tests.forEach(test => {
+			test.addEventListener('click', () => {
+				const isActive = test.classList.contains('active');
+
+				tests.forEach(t => {
+					t.classList.remove('active');
+					t.querySelector('.test-details').style.display = 'none';
+				});
+
+				if (!isActive) {
+					test.classList.add('active');
+					test.querySelector('.test-details').style.display = 'block';
+				}
+			})
+		});
+	</script>
 </body>
 </html>

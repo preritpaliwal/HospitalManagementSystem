@@ -19,7 +19,7 @@ def patient_history_TT(cursor, PatientID):
     Returns Patient's Name, 
     """
     
-    query = f"SELECT DISTINCT Patient.Name, Doctor.Name, Test_Treatment.Name, Undergoes.dt, Undergoes.Slot, Undergoes.Outcome \
+    query = f"SELECT Patient.Name, Doctor.Name, Test_Treatment.Name, Undergoes.dt, Undergoes.Slot, Undergoes.Outcome, Undergoes.Image \
             FROM Patient JOIN Undergoes JOIN Doctor JOIN Test_Treatment \
             on (Undergoes.Patient = Patient.ID and Undergoes.Doctor = Doctor.ID and Undergoes.Code = Test_Treatment.Code) \
             WHERE Patient.ID = {PatientID};"
@@ -31,7 +31,7 @@ def patient_history_TT(cursor, PatientID):
 
 def patient_history_Medication(cursor, PatientID):
     
-    query = f"SELECT DISTINCT Patient.Name, Doctor.Name, Medicine.Name, Medicine.Manufacturer, Prescribes.Dosage, Prescribes.Duration, Prescribes.dt \
+    query = f"SELECT Patient.Name, Doctor.Name, Medicine.Name, Medicine.Manufacturer, Prescribes.Dosage, Prescribes.Duration, Prescribes.dt \
             FROM Prescribes JOIN Patient JOIN Doctor JOIN Medicine \
             on ( Prescribes.Patient = Patient.ID and Prescribes.Doctor = Doctor.ID and Prescribes.Medicine = Medicine.ID ) \
             WHERE Patient.ID = {PatientID};"

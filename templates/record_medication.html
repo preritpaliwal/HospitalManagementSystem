@@ -6,8 +6,11 @@
 </head>
 <body>
 	<div class="logout-button">
-		<form action="/logout" method="post">
+		<form action="/logout" method="post" style="padding: 2px;">
 			<button type="submit">Logout</button>
+		</form>
+		<form action="/doctor" method="post" style="padding: 2px;">
+			<button type="submit">Back</button>
 		</form>
 	 </div>
 	<div class="panel">Doctor: Medication</div>
@@ -30,5 +33,8 @@
 
 		<input type="submit" value="Submit">
 	</form>
+	{% if flag == 1 %}
+		<h2 style="color: greenyellow; text-align: center;">Medication Recorded!</h2>
+	{% endif %}
 </body>
 </html>

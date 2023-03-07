@@ -216,8 +216,9 @@ def updateresults():
         f = request.files['result-file']
         extension = secure_filename(f.filename).split('.')[-1]
         filename = request.form['test-id'] + '.' + extension
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        test_not_found = not update_result(cursor, request.form['test-id'], request.form['results'])
+        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        f.save(path)
+        test_not_found = not update_result(cursor, request.form['test-id'], request.form['results'], path)
         if test_not_found:
             return redirect('/dataentryoperator/1')
     return redirect('/dataentryoperator/0')
@@ -246,7 +247,7 @@ def recordmedication():
         
         prescribe_medicine(cursor, currentuserid, request.form['patient_id'], request.form['medication_id'], request.form['dosage'], request.form['duration'], request.form['date'])
         
-    return redirect('/doctor')
+    return redirect('/gotorecordmedication/1')
 
 @app.route('/recordtesttreatment', methods=["POST", "GET"])
 def recordtesttreatment():
@@ -256,7 +257,7 @@ def recordtesttreatment():
         print(request.form['doctor_id'])
         
     prescribe_test_treatment(cursor,request.form['test_treatment_id'],request.form['doctor_id'], request.form['patient_id'] )
-    return redirect('/doctor')
+    return redirect('/gotorecordtesttreatment/1')
 
 @app.route('/viewmedicalhistory', methods=["POST", "GET"])
 def viewmedicalhistory():
@@ -276,7 +277,16 @@ def testtreatmenthistory():
     if request.method == "POST":
         print("PATIENT ID : ", request.form['patient_id'])
         tests = patient_history_TT(cursor,(int) (request.form['patient_id']))
-    return render_template('viewmedicalhistory.html', tests=tests, flag=2, patient_id = request.form['patient_id'])
+        final_tests = []
+        for test in tests:
+            test_list = list(test)
+            if test[6] == None:
+                test_list.append(0)
+            else:
+                test_list.append(1)
+            final_tests.append(tuple(test_list))
+        print(final_tests)
+    return render_template('viewmedicalhistory.html', tests=final_tests, flag=2, patient_id = request.form['patient_id'])
 
 
 if __name__ == '__main__':
