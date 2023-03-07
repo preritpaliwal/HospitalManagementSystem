@@ -213,3 +213,30 @@ button:hover{
   padding: 10px;
 }
 
+.slot-container {
+  display: flex;
+  justify-content: center;
+}
+
+.slot-panel {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.slot-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.slot-button.inactive {
+  background-color: #A9A9A9; /* Grey */
+  cursor: not-allowed;
+}
+

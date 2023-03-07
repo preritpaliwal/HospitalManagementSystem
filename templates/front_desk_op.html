@@ -9,10 +9,10 @@
 
 <body>
     <div class="logout-button">
-		<form action="/logout" method="post">
-			<button type="submit">Logout</button>
-		</form>
-	 </div>
+        <form action="/logout" method="post">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
     <div class="panel">Front Desk Operator</div>
     <div class="container">
         <div class="panel-options">
@@ -71,14 +71,14 @@
                     <input type="submit" value="Submit">
                 </form>
                 {% if flag == 1 %}
-                    <h3 style="color: maroon; text-align: center" > Patient Already Exists!</h3>
-                    <!-- <script> -->
-                        <!-- alert("Error Registering Patient!"); -->
-                    <!-- </script> -->
+                <h3 style="color: maroon; text-align: center"> Patient Already Exists!</h3>
+                <!-- <script> -->
+                <!-- alert("Error Registering Patient!"); -->
+                <!-- </script> -->
                 {% endif %}
             </div>
-            {% endif %} 
-            {% if display == 2 %}                
+            {% endif %}
+            {% if display == 2 %}
             <div id="Admit Patient" class="form-panel">
                 <h2 style="margin-top: 80px;">Admit Patient</h2>
                 <h3>(Make sure Patient is Registered first)</h3>
@@ -92,7 +92,7 @@
                     <input type="submit" value="Submit">
                 </form>
                 {% if flag == 1 %}
-                    <h3 style="color: maroon; text-align: center">Patient Not Found!</h3>
+                <h3 style="color: maroon; text-align: center">Patient Not Found!</h3>
                 {% endif %}
             </div>
             {% endif %}
@@ -105,11 +105,11 @@
                     <input type="text" id="patient-id" name="patient-id" required>
 
                     <label for="discharge-date">Discharge Date:</label>
-                    <input type="date" id="discharge-date" name="discharge-date" >
+                    <input type="date" id="discharge-date" name="discharge-date">
                     <input type="submit" value="Submit">
                 </form>
                 {% if flag == 1 %}
-                    <h3 style="color: maroon; text-align: center">No Such Patient Admitted!</h3>
+                <h3 style="color: maroon; text-align: center">No Such Patient Admitted!</h3>
                 {% endif %}
             </div>
             {% endif %}
@@ -120,40 +120,67 @@
                 <form class="other-forms" action="/makeappointment" method="post">
                     <label for="patient-id">Patient ID:</label>
                     <input type="text" id="patient-id" name="patient-id" required>
-
                     <label for="doc-id">Doctor ID:</label>
                     <input type="text" id="doc-id" name="doc-id" required>
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date">
                     <input type="submit" value="Submit">
                 </form>
                 {% if flag == 1 %}
-                    <h3 style="color: maroon;">Patient Not Found!</h3>
+                <h3 style="color: maroon;">Patient Not Found!</h3>
                 {% endif %}
                 {% if flag == 2 %}
-                    <h3 style="color: maroon;">Doctor Not Found!</h3>
+                <h3 style="color: maroon;">Doctor Not Found!</h3>
                 {% endif %}
                 {% if flag == 3 %}
-                    <h3 style="color: #397c3c;">Appointment set to : {{ date }}</h3>
-                    <button class="btn-schedule" onclick="scheduleAppointment('{{ curdetails }}', '{{ date }}')">Get PDF</button>
+                <h3 style="color: maroon;">No Free Slots on Selected Date!</h3>
+                {% endif %}
+                {% if flag == 4 %}
+                <h3 style="color:aliceblue; text-align: center;">Select Slot:</h3>
+                <div class="slot-container">
+                    <div class="slot-panel">
+                        <form action="/updateslot" method="post">
+                            <input type="hidden" name="id" value="{{ ID }}">
+                            <input type="hidden" name="slot" value="1">
+                            <button class="slot-button active">Slot 1</button>
+                        </form>
+                        <button class="slot-button inactive">Slot 2</button>
+                        <form action="/updateslot" method="post">
+                            <input type="hidden" name="id" value="{{ ID }}">
+                            <input type="hidden" name="slot" value="3">
+                            <button class="slot-button active">Slot 3</button>
+                        </form>
+                        <button class="slot-button inactive">Slot 4</button>
+                        <button class="slot-button inactive">Slot 5</button>
+                        <button class="slot-button inactive">Slot 6</button>
+                    </div>
+                </div>
+                {% endif %}
+                {% if flag == 5 %}
+                <button class="btn-schedule" onclick="scheduleAppointment('{{ curdetails }}')">Get PDF</button>
                 {% endif %}
                 <script>
-                    function scheduleAppointment(curdetails, date) {
+                    function scheduleAppointment(curdetails) {
                         var curdetailArray = curdetails.split(',');
                         var patientID = curdetailArray[0];
                         var patientName = curdetailArray[1];
                         var doctorID = curdetailArray[2];
                         var doctorName = curdetailArray[3];
-                        console.log(patientID, patientName, doctorID, doctorName, date);
-                        generatePdfA(patientID, patientName, doctorID, doctorName, date);
+                        var date = curdetailArray[4];
+                        var slot = curdetailArray[5];
+                        console.log(patientID, patientName, doctorID, doctorName, date, slot);
+                        generatePdfA(patientID, patientName, doctorID, doctorName, date, slot);
                     }
 
-                    function generatePdfA(patientID, patientName, doctorID, doctorName, date) {
+                    function generatePdfA(patientID, patientName, doctorID, doctorName, date, slot) {
                         var newdoc = new jsPDF();
                         newdoc.text("Patient ID: " + patientID, 20, 20);
                         newdoc.text("Patient Name: " + patientName, 20, 30);
                         newdoc.text("Doctor ID: " + doctorID, 20, 40);
                         newdoc.text("Doctor Name: " + doctorName, 20, 50);
                         newdoc.text("Date: " + date, 20, 60);
-                        newdoc.save(patientName+" Appointment.pdf");
+                        newdoc.text("Slot: " + slot, 20, 70);
+                        newdoc.save(patientName + " Appointment.pdf");
                     }
                 </script>
             </div>
@@ -195,25 +222,27 @@
                 </table>
 
                 {% if flag == 1 %}
-                    <button class="btn-schedule" onclick="scheduletesttreatment('{{ curtest }}', '{{ date }}')">Get PDF</button>
+                <button class="btn-schedule" onclick="scheduletesttreatment('{{ curtest }}', '{{ date }}', '{{ slot }}')">Get
+                    PDF</button>
                 {% endif %}
 
                 <script>
-                    function scheduletesttreatment(curtest, date) {
+                    function scheduletesttreatment(curtest, date, slot) {
                         var curtestArray = curtest.split(',');
                         var patientName = curtestArray[0];
                         var testtreatment = curtestArray[1];
                         var doctor = curtestArray[2];
-                        generatePdfTT(patientName, testtreatment, doctor, date);
+                        generatePdfTT(patientName, testtreatment, doctor, date, slot);
                     }
 
-                    function generatePdfTT(patientName, testtreatment, doctor, date) {
+                    function generatePdfTT(patientName, testtreatment, doctor, date, slot) {
                         var doc = new jsPDF();
                         doc.text("Patient Name: " + patientName, 20, 20);
                         doc.text("Test/Treatment: " + testtreatment, 20, 30);
                         doc.text("Doctor: " + doctor, 20, 40);
                         doc.text("Date: " + date, 20, 50);
-                        doc.save(patientName+" Schedule.pdf");
+                        doc.text("Slot: " + slot, 20, 60);
+                        doc.save(patientName + " Schedule.pdf");
                     }
                 </script>
             </div>
@@ -221,4 +250,5 @@
         </div>
     </div>
 </body>
+
 </html>

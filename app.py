@@ -172,17 +172,34 @@ def makeappointment():
     if request.method == "POST":
         print(request.form['patient-id'])
         print(request.form['doc-id'])
-        # Get appointment date from the database
-        date = '2020-01-01'
-        # Get patient and doctor details from the database
-        details = ['Patient-id', 'Patient-name', 'Doctor-id', 'Doctor-name']
-        curdetails = details[0] + ',' + details[1] + ',' + details[2] + ',' + details[3]
-        print(type(curdetails), type(details[0]))
-        # Make the appointment in the database
-        patient_not_found = 0
-        if patient_not_found:
+        print(request.form['date'])
+        # error check
+        # 1 - patient not found
+        # 2 - doctor not found
+        # 3 - slot not available
+        error = 0
+        if error == 1:
             return redirect('/frontdesk/makeappointment/1')
-    return render_template('front_desk_op.html', display=4, flag=3, date=date, curdetails=curdetails)
+        elif error == 2:
+            return redirect('/frontdesk/makeappointment/2')
+        elif error == 3:
+            return redirect('/frontdesk/makeappointment/3')
+        # Insert into database
+        # Get appointment Id
+        ID = 100
+    return render_template('front_desk_op.html', display=4, flag=4, ID=ID)
+
+@app.route('/updateslot', methods=["POST", "GET"])
+def updateslot():
+    if request.method == "POST":
+        print(request.form['id'])
+        print(request.form['slot'])
+        # Update the slot in the database
+        # Get patient and doctor details from the database
+        details = ['Patient-id', 'Patient-name', 'Doctor-id', 'Doctor-name', 'Date', 'Slot']
+        curdetails = details[0] + ',' + details[1] + ',' + details[2] + ',' + details[3] + ',' + details[4] + ',' + details[5]
+        print(type(curdetails), type(details[0]))
+    return render_template('front_desk_op.html', display=4, flag=5, curdetails=curdetails)
 
 @app.route('/scheduletesttreatmentbutton', methods=["POST", "GET"])
 def scheduletesttreatmentbutton():
@@ -196,13 +213,14 @@ def scheduletesttreatment():
         print(request.form['test-id'])
         print(request.form['doctor-id'])
         # Schedule the test and treatment in the database
-        # Get appointment date from the database
+        # Get appointment date and slot from the database
         date = '2020-01-01'
+        slot = 1
         # Get the list of tests and treatments
         tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
         curtest = request.form['patient-name'] + ',' + request.form['test-treatment'] + ',' + request.form['doctor-name'] 
         print(type(curtest), type(request.form['patient-name']))
-    return render_template('front_desk_op.html', display=5, flag=1, date=date, tests=tests, curtest=curtest)
+    return render_template('front_desk_op.html', display=5, flag=1, date=date, slot= slot, tests=tests, curtest=curtest)
 
 @app.route('/dataentryoperator/<flag>', methods=["POST", "GET"])
 def dataoperator(flag):
@@ -226,7 +244,9 @@ def updateresults():
 @app.route('/doctor', methods=["POST", "GET"])
 def doctor():
     patients = fetch_all_patients(cursor, currentuserid)
-    return render_template('doctor.html', patients=patients)
+    # Get all appointments for the current doctor
+    appointments = [('20-03-2022', '3', 'Appointment'), ('20-03-2022', '4', 'Test', 'test1'), ('20-03-2022', '5', 'Treatment', 'treatment1')]
+    return render_template('doctor.html', patients=patients, appointments=appointments)
 
 @app.route('/gotorecordmedication/<flag>', methods=["POST", "GET"])
 def gotorecordmedication(flag):
@@ -243,10 +263,8 @@ def recordmedication():
         print(request.form['medication_id'])
         print(request.form['dosage'])
         print(request.form['date'])
-        print(request.form['duration'])
-        
+        print(request.form['duration'])    
         prescribe_medicine(cursor, currentuserid, request.form['patient_id'], request.form['medication_id'], request.form['dosage'], request.form['duration'], request.form['date'])
-        
     return redirect('/gotorecordmedication/1')
 
 @app.route('/recordtesttreatment', methods=["POST", "GET"])

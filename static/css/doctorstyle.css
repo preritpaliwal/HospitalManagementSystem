@@ -14,7 +14,7 @@ body {
     margin-top: 80px;
     width: 48%;
     padding: 10px;
-    background:  linear-gradient(#5d54a3d1, #C7C5F4);
+    background: linear-gradient(#5d54a3d1, #C7C5F4);
 }
 
 .calendar-container {
@@ -22,7 +22,7 @@ body {
     margin-left: 10px;
     width: 48%;
     padding: 10px;
-    background:  linear-gradient(#5d54a3d1, #C7C5F4);
+    background: linear-gradient(#5d54a3d1, #C7C5F4);
 }
 
 
@@ -90,7 +90,7 @@ button {
     font-size: 16px;
 }
 
-button:hover{
+button:hover {
     background-color: #45a049;
 }
 
@@ -104,4 +104,22 @@ button:hover{
     top: 0;
     right: 0;
     padding: 10px;
- }
+}
+
+table {
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ccc;
+}
+
+th {
+    background-color: #f2f2f2;
+    color: #333;
+}
