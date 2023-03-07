@@ -2,7 +2,7 @@ INSERT INTO Login_Table VALUES (1, 'Front Desk Operator', 'Vibhu');
 INSERT INTO Login_Table VALUES (2, 'Data Entry Operator','Prerit');
 INSERT INTO Login_Table VALUES (3, 'Doctor', 'Deepsikha');
 INSERT INTO Login_Table VALUES (4, 'Doctor', 'Anushka');
-INSERT INTO Login_Table VALUES (5, 'Admin', 'Umika');
+INSERT INTO Login_Table VALUES (5, 'Database Administrator', 'Umika');
 
 INSERT INTO Doctor VALUES (3, 'Deepsikha', 'Physician', 'Deepsikha@gmail.com', '1234567890');
 INSERT INTO Doctor VALUES (4, 'Anushka', 'Cardiology', 'Anushka@gmail.com', '1234554321');
