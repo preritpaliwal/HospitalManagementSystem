@@ -1,7 +1,6 @@
 import pymysql
 from tabulate import tabulate
 
-# TODO : Implement a measure to prevent SQL Injection
 def validate_user(cursor, Id, Type, Password):
     """
     Check if the user exists in the database.

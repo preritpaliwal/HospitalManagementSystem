@@ -1,4 +1,3 @@
-# TODO - Show medications prescribed by doctor
 def fetch_all_patients(cursor, DoctorID):
     
     query = f"SELECT DISTINCT Patient.ID, Patient.Name, Patient.Age,  Patient.Phone, \
@@ -14,16 +13,13 @@ def fetch_all_patients(cursor, DoctorID):
     
     return rows
 
-# TODO - Implement two functions to show patient details
-# 1. Tests => (Patient.Name, Test.Name, Doctor.Name, Date, Slot, Outcome)
-# 2. Medication => (Patient.Name, Doctor.Name, Medication.Name, Dosage, Duration, Date)
 def patient_history_TT(cursor, PatientID):
     """
     Fetch Test / Treatment history of a patient.
     Returns Patient's Name, 
     """
     
-    query = f"SELECT Patient.Name, Doctor.Name, Test_Treatment.Name, Undergoes.dt, Undergoes.Slot, Undergoes.Outcome \
+    query = f"SELECT DISTINCT Patient.Name, Doctor.Name, Test_Treatment.Name, Undergoes.dt, Undergoes.Slot, Undergoes.Outcome \
             FROM Patient JOIN Undergoes JOIN Doctor JOIN Test_Treatment \
             on (Undergoes.Patient = Patient.ID and Undergoes.Doctor = Doctor.ID and Undergoes.Code = Test_Treatment.Code) \
             WHERE Patient.ID = {PatientID};"
@@ -31,11 +27,11 @@ def patient_history_TT(cursor, PatientID):
     cursor.execute(query)
     rows = cursor.fetchall()
     
-    return rows
+    return rows 
 
 def patient_history_Medication(cursor, PatientID):
     
-    query = f"SELECT Patient.Name, Doctor.Name, Medicine.Name, Medicine.Manufacturer, Prescribes.Dosage, Prescribes.Duration, Prescribes.dt \
+    query = f"SELECT DISTINCT Patient.Name, Doctor.Name, Medicine.Name, Medicine.Manufacturer, Prescribes.Dosage, Prescribes.Duration, Prescribes.dt \
             FROM Prescribes JOIN Patient JOIN Doctor JOIN Medicine \
             on ( Prescribes.Patient = Patient.ID and Prescribes.Doctor = Doctor.ID and Prescribes.Medicine = Medicine.ID ) \
             WHERE Patient.ID = {PatientID};"
@@ -44,20 +40,6 @@ def patient_history_Medication(cursor, PatientID):
     rows = cursor.fetchall()
     
     return rows
-
-def query_patient_info(cursor, DoctorID, PatientID):
-
-    query = f"SELECT * \
-          FROM Undergoes JOIN Patient on (Undergoes.Patient = Patient.ID) \
-          WHERE Doctor = {DoctorID} and Patient = {PatientID};"
-          
-    cursor.execute(query)
-    
-    columns = [column[0] for column in cursor.description]
-    rows = cursor.fetchall()
-    # print( tabulate( rows, headers = columns, tablefmt= 'psql') )
-    
-    return (columns, rows)
 
 def prescribe_test_treatment(cursor, TTCode, DoctorID, PatientID):
     """

@@ -267,18 +267,16 @@ def viewmedicalhistory():
 @app.route('/medicationhistory', methods=["POST", "GET"])
 def medicationhistory():
     if request.method == "POST":
-        print(request.form['patient_id'])
-        # Get the medication history from the database
-        medications = [('patient-name', 'doctor-name', 'medication', 'dosage', 'duration', 'date')]
-    return render_template('viewmedicalhistory.html', medications=medications, flag=1)
+        print("PATIENT ID : ", request.form['patient_id'])
+        medications = patient_history_Medication(cursor, (int) (request.form['patient_id']))
+    return render_template('viewmedicalhistory.html', medications=medications, flag=1, patient_id = request.form['patient_id'])
 
 @app.route('/testtreatmenthistory', methods=["POST", "GET"])
 def testtreatmenthistory():
     if request.method == "POST":
-        print(request.form['patient_id'])
-        # Get the test history from the database
-        tests = [('patient-name', 'test', 'doctor-name', 'date', 'slot', 'results')]
-    return render_template('viewmedicalhistory.html', tests=tests, flag=2)
+        print("PATIENT ID : ", request.form['patient_id'])
+        tests = patient_history_TT(cursor,(int) (request.form['patient_id']))
+    return render_template('viewmedicalhistory.html', tests=tests, flag=2, patient_id = request.form['patient_id'])
 
 
 if __name__ == '__main__':
