@@ -4,9 +4,13 @@ from FrontDeskOp import *
 from DbAdmin import *
 from Doctor import *
 from DataEntryOp import *
+import os
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config["DEBUG"] = True
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 currentuserid = -1
 
@@ -209,7 +213,9 @@ def updateresults():
     if request.method == "POST":
         print(request.form['test-id'])
         print(request.form['results'])
-        
+        f = request.files['result-file']
+        filename = secure_filename(f.filename)
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         test_not_found = not update_result(cursor, request.form['test-id'], request.form['results'])
         if test_not_found:
             return redirect('/dataentryoperator/1')

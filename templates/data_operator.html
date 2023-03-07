@@ -12,14 +12,14 @@
 	 </div>
 	<div class="panel">Data Operator</div>
 	<h1 style="margin-top: 80px;">Update Results</h1>
-	<form class="input-form" action="/updateresults" method="post">
+	<form class="input-form" action="/updateresults" method="post" enctype="multipart/form-data">
 		<label for="test-id">Test/Treatment ID:</label>
 		<input type="text" id="test-id" name="test-id" required>
 
 		<label for="results">Results:</label>
 		<textarea id="results" name="results" rows="10" required></textarea>
 		<label for="report">Report:</label>
-		<input type="file" id="report" /><br /><br />
+		<input type="file" id="report" name="result-file" accept="image/*"/><br /><br />
 
 		<input type="submit" value="Submit">
 	</form>
