@@ -51,13 +51,13 @@ def hello_world():
 
 @app.route('/logout', methods=["POST", "GET"])
 def logout():
+    global currentuserid
     currentuserid = ''
     return redirect('/')
 
 
 @app.route('/admin/<flag>', methods=["POST", "GET"])
 def admin(flag):
-    # Query the database and get the list of usernames and types
     users = fetch_users(cursor)
     return render_template('admin.html', users=users , flag=int(flag))
 
