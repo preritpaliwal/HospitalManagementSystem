@@ -49,7 +49,12 @@ def register_patient(cursor, Name, Age, Phone, Email, Address, InsuranceID):
     return True
 
 # Schedule Appointments for Patients
-# TODO - Figure out this shit
+# TODO - 
+def schedule_appointment(cursor, PatientID, DoctorID, Date):
+    
+    query = f"SELECT * FROM "
+    
+    pass
 
 # Notify Doctors of Appointments
 # TODO - Figure out this shit

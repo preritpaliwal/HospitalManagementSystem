@@ -5,6 +5,7 @@ def update_result(cursor, UndergoesID, outcome, image = None):
     Update the outcome and/or image of a Test or Treatment in the Undergoes Table
     """
     # TODO - Check if outcome has already been filled
+    # Create a "yes / no" button to ask if we want to over-write current data.
     
     query = f"SELECT * FROM Undergoes WHERE ID = {UndergoesID};"
     cursor.execute(query)
