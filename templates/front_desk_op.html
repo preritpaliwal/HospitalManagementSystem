@@ -139,20 +139,17 @@
                 <h3 style="color:aliceblue; text-align: center;">Select Slot:</h3>
                 <div class="slot-container">
                     <div class="slot-panel">
+                        {% for appointment in appointments %}
+                        {% if appointment[1] == 1 %}
                         <form action="/updateslot" method="post">
                             <input type="hidden" name="id" value="{{ ID }}">
                             <input type="hidden" name="slot" value="1">
-                            <button class="slot-button active">Slot 1</button>
+                            <button class="slot-button active">{{ appointment[0] }}</button>
                         </form>
-                        <button class="slot-button inactive">Slot 2</button>
-                        <form action="/updateslot" method="post">
-                            <input type="hidden" name="id" value="{{ ID }}">
-                            <input type="hidden" name="slot" value="3">
-                            <button class="slot-button active">Slot 3</button>
-                        </form>
-                        <button class="slot-button inactive">Slot 4</button>
-                        <button class="slot-button inactive">Slot 5</button>
-                        <button class="slot-button inactive">Slot 6</button>
+                        {% else %}
+                        <button class="slot-button inactive">{{ appointment[0] }}</button>
+                        {% endif %}
+                        {% endfor %}
                     </div>
                 </div>
                 {% endif %}

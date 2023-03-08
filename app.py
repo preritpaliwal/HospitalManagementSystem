@@ -187,7 +187,9 @@ def makeappointment():
         # Insert into database
         # Get appointment Id
         ID = 100
-    return render_template('front_desk_op.html', display=4, flag=4, ID=ID)
+        # Get appointment slot status
+        appointments = [('Slot 1', 1), ('Slot 2', 0), ('Slot 3', 1), ('Slot 4', 1), ('Slot 5', 0), ('Slot 6', 1), ('Slot 7', 0), ('Slot 8', 0)]
+    return render_template('front_desk_op.html', display=4, flag=4, ID=ID, appointments=appointments)
 
 @app.route('/updateslot', methods=["POST", "GET"])
 def updateslot():
