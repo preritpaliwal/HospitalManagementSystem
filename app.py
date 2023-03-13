@@ -273,7 +273,8 @@ def updateresults():
 def doctor():
     patients = fetch_all_patients(cursor, currentuserid)
     # Get all appointments for the current doctor
-    appointments = [('20-03-2022', '3', 'Appointment'), ('20-03-2022', '4', 'Test', 'test1'), ('20-03-2022', '5', 'Treatment', 'treatment1')]
+    appointments = fetch_schedule(cursor, currentuserid)
+    # appointments = [('20-03-2022', '3', 'Appointment'), ('20-03-2022', '4', 'Test', 'test1'), ('20-03-2022', '5', 'Treatment', 'treatment1')]
     return render_template('doctor.html', patients=patients, appointments=appointments)
 
 @app.route('/gotorecordmedication/<flag>', methods=["POST", "GET"])

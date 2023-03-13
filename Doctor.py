@@ -17,8 +17,30 @@ def fetch_schedule(cursor, DoctorID):
     
     slots = [ str(x)+":00-"+str(x+1)+":00" for x in range(9,13) ] + [ str(x)+":00-"+str(x+1)+":00" for x in range(14,18) ]
     
-    query = f"SELECT  FROM Appointment WHERE Doctor = {DoctorID} ORDER BY dt, Slot;"
+    query = f"SELECT dt,slot,'Appointment' FROM Appointment WHERE Doctor = {DoctorID} ORDER BY dt, Slot;"
     cursor.execute(query)
+    
+    
+    appointments = list(cursor.fetchall())
+    
+    for i,ele in enumerate(appointments):
+        appointments[i] = (ele[0], slots[ele[1]-1], "Appointment", "")
+    
+    print(appointments)
+    
+    query = f"SELECT Undergoes.dt, Undergoes.slot,Test_Treatment.Type, Test_Treatment.Name  FROM Undergoes JOIN Test_Treatment on (Undergoes.Code = Test_Treatment.Code) WHERE Doctor = {DoctorID} and dt is NOT NULL ORDER BY dt, Slot;"
+    cursor.execute(query)
+    
+    tests_treatments = list(cursor.fetchall())
+    
+    for i,ele in enumerate(tests_treatments):
+        tests_treatments[i] = (ele[0], slots[ele[1]-1], ele[2], ele[3])
+    
+    print(tests_treatments)
+    
+    schedule = appointments + tests_treatments
+    
+    return schedule
     
     
 
@@ -77,7 +99,3 @@ def prescribe_medicine(cursor, DoctorID, PatientID, MedicineID, Dosage, Duration
 
 
     cursor.execute(query)
-
-# Send Email to doctor on a weekly basis with all the patients treated by the doctor
-# Implement High Priority Notifications for patients with critical conditions
-# TODO - Figure out this shit
