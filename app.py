@@ -142,9 +142,7 @@ def admitpatient():
         patient_not_found = not admit_patient(cursor, request.form['patient-id'], request.form['admit-date'])
         if patient_not_found:
             return redirect('/frontdesk/admitpatient/1')
-        doctor_not_found = 1
-        if doctor_not_found:
-            return redirect('/frontdesk/admitpatient/2')
+    
     return redirect('/frontdesk/admitpatient/0')
 
 @app.route('/dischargepatientbutton', methods=["POST", "GET"])
@@ -166,40 +164,39 @@ def dischargepatient():
 def makeappointmentbutton():
     return redirect('/frontdesk/makeappointment/0')
 
-# TODO - Implement Scheduling & connect to backend
 @app.route('/makeappointment', methods=["POST", "GET"])
 def makeappointment():
     if request.method == "POST":
         print(request.form['patient-id'])
-        print(request.form['doc-id'])
+        print(request.form['doc-id']) 
         print(request.form['date'])
-        # error check
+        
+        error, slots, app_ID = schedule_appointment(cursor, request.form['patient-id'], request.form['doc-id'], request.form['date'])
+
+        print("NEW APPOINTMENT ID: ", app_ID)
+
         # 1 - patient not found
-        # 2 - doctor not found
-        # 3 - slot not available
-        error = 0
         if error == 1:
             return redirect('/frontdesk/makeappointment/1')
+        # 2 - doctor not found
         elif error == 2:
             return redirect('/frontdesk/makeappointment/2')
+        # 3 - slot not available
         elif error == 3:
             return redirect('/frontdesk/makeappointment/3')
-        # Insert into database
-        # Get appointment Id
-        ID = 100
-        # Get appointment slot status
-        appointments = [('Slot 1', 1), ('Slot 2', 0), ('Slot 3', 1), ('Slot 4', 1), ('Slot 5', 0), ('Slot 6', 1), ('Slot 7', 0), ('Slot 8', 0)]
-    return render_template('front_desk_op.html', display=4, flag=4, ID=ID, appointments=appointments)
+        
+    return render_template('front_desk_op.html', display=4, flag=4, ID=app_ID, appointments=slots)
 
+# TODO - update slot value from slotno to time_slot in pdf
 @app.route('/updateslot', methods=["POST", "GET"])
 def updateslot():
     if request.method == "POST":
-        print(request.form['id'])
+        print(request.form['id']) 
         print(request.form['slot'])
-        # Update the slot in the database
-        # Get patient and doctor details from the database
-        details = ['Patient-id', 'Patient-name', 'Doctor-id', 'Doctor-name', 'Date', 'Slot']
-        curdetails = details[0] + ',' + details[1] + ',' + details[2] + ',' + details[3] + ',' + details[4] + ',' + details[5]
+      
+        details = update_appointment_slot(cursor, request.form['id'], request.form['slot'])
+        curdetails = ','.join(str(d) for d in details)
+        
         print(type(curdetails), type(details[0]))
     return render_template('front_desk_op.html', display=4, flag=5, curdetails=curdetails)
 
@@ -214,8 +211,6 @@ def scheduletesttreatment():
         print(request.form['patient-id'])
         print(request.form['test-id'])
         print(request.form['doctor-id'])
-        # Schedule the test and treatment in the database
-        # Get appointment date and slot from the database
         date = '2020-01-01'
         slot = 1
         # Get the list of tests and treatments

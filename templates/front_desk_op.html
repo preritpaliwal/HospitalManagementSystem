@@ -143,7 +143,7 @@
                         {% if appointment[1] == 1 %}
                         <form action="/updateslot" method="post">
                             <input type="hidden" name="id" value="{{ ID }}">
-                            <input type="hidden" name="slot" value="1">
+                            <input type="hidden" name="slot" value="{{ loop.index }}">
                             <button class="slot-button active">{{ appointment[0] }}</button>
                         </form>
                         {% else %}
@@ -159,6 +159,7 @@
                 <script>
                     function scheduleAppointment(curdetails) {
                         var curdetailArray = curdetails.split(',');
+                        <!-- var curdetailArray = curdetails; -->
                         var patientID = curdetailArray[0];
                         var patientName = curdetailArray[1];
                         var doctorID = curdetailArray[2];
