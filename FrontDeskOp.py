@@ -253,7 +253,7 @@ def discharge_patient(cursor, PatientID, DischargeDate):
 
 # Schedule Tests and Treatments Sessions prescribed to Patients by Doctors
 # TODO - Figure out this shit
-def schedule_TT(cursor, PatientID, DoctorID, TestID):
+def schedule_TT(cursor, PatientID, DoctorID, TestID, Date):
     
     query = f"SELECT * FROM Undergoes \
             WHERE Patient = {PatientID} and Doctor = {DoctorID} and Code = '{TestID}' and dt is NULL and slot is NULL;"
@@ -263,7 +263,7 @@ def schedule_TT(cursor, PatientID, DoctorID, TestID):
     if(cursor.rowcount == 0):
         print("No such Test/Treatment prescribed to the patient")
     
-    rows = query.fetchall()
+    rows = cursor.fetchall()
     
     first_row = rows[0]
     app_ID = first_row[0]
@@ -273,11 +273,36 @@ def schedule_TT(cursor, PatientID, DoctorID, TestID):
     else:
         Date = "'" + Date + "'"
     
-    query =f"UPDATE Undergoes SET dt = {Date}, slot = {Slot} WHERE ID = {app_ID};"
+    query = f"SELECT * FROM Appointment \
+        WHERE (Patient = {PatientID} or Doctor = {DoctorID}) and dt = {Date};"    
+    cursor.execute(query)
+    
+    # We assume a doctor has 8 total slots (1 hr each) per day (9 am - 1 pm, 2 pm - 6 pm)
+    if (cursor.rowcount == 8):
+        return -1
+
+    rows = cursor.fetchall()
+
+    # 1 : available slot
+    # slots = [("Slot " + str(x), 1) for x in range(1, 9)]
+    slots = [ (str(x)+":00-"+str(x+1)+":00", 1) for x in range(9,13) ] + [ (str(x)+":00-"+str(x+1)+":00",1) for x in range(14,18) ]
+    for row in rows:
+        slots[(int)(row[4]-1)] = (slots[(int)(row[4]-1)][0], 0)
+    
+    idx = -1
+    for (i,(slot, avail)) in enumerate(slots):
+        if(avail == 1):
+            idx = i+1
+            break
+        
+    if(idx == -1):
+        return -1
+    
+    query =f"UPDATE Undergoes SET dt = {Date}, slot = {idx} WHERE ID = {app_ID};"
     
     cursor.execute(query)
     
-    
+    return idx
 
 def unscheduled_TT(cursor):
 

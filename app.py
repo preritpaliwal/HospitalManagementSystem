@@ -233,14 +233,21 @@ def scheduletesttreatment():
         print(request.form['patient-id'])
         print(request.form['test-id'])
         print(request.form['doctor-id'])
+        print(request.form['date'])
         
-        date = '2020-01-01'
-        slot = 1
+        date = request.form['date']
+        slot = schedule_TT(cursor, request.form['patient-id'], request.form['doctor-id'], request.form['test-id'], request.form['date'])
+        
         # Get the list of tests and treatments
         tests = unscheduled_TT(cursor)
-        curtest = request.form['patient-name'] + ',' + request.form['test-treatment'] + ',' + request.form['doctor-name'] 
-        # tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
-        print(type(curtest), type(request.form['patient-name']))
+        curtest = request.form['patient-name'] + ',' + request.form['test-treatment'] + ',' + request.form['doctor-name']
+        
+        # if(date is None or date == ""):
+        
+        if(slot is None or slot == -1):
+            return render_template('front_desk_op.html', display=5, flag=2, tests=tests, curtest=curtest)
+            
+ 
     return render_template('front_desk_op.html', display=5, flag=1, date=date, slot= slot, tests=tests, curtest=curtest)
 
 @app.route('/dataentryoperator/<flag>', methods=["POST", "GET"])

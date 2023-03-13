@@ -192,8 +192,8 @@
                             <th>Patient Name</th>
                             <th>Treatment/Test</th>
                             <th>Doctor</th>
+                            <th>Date</th>
                             <th>Action</th>
-                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -210,7 +210,7 @@
                                 <input type="hidden" name="doctor-id" value="{{ test[4] }}">
                                 <input type="hidden" name="doctor-name" value="{{ test[5] }}">
                                 <td>  
-                                    <input type="date" name="date" required>
+                                    <input type="date" name="date">
                                 </td>
                                 <td>
                                     <button class="btn-schedule">Schedule</button>
@@ -225,6 +225,12 @@
                 {% if flag == 1 %}
                 <button class="btn-schedule" onclick="scheduletesttreatment('{{ curtest }}', '{{ date }}', '{{ slot }}')">Get
                     PDF</button>
+
+                {% endif %}
+
+                {% if flag == 2 %}
+                <h3 style="color: maroon;">No Slot Available!</h3>
+                
                 {% endif %}
 
                 <script>
