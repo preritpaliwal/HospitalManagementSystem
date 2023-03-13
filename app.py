@@ -8,6 +8,7 @@ from Doctor import *
 from DataEntryOp import *
 import os
 from werkzeug.utils import secure_filename
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -25,6 +26,7 @@ app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
 
 currentuserid = -1
+slots = [ str(x)+":00-"+str(x+1)+":00" for x in range(9,13) ] + [ str(x)+":00-"+str(x+1)+":00" for x in range(14,18) ]
 
 ssh, connect = setup_Database()
 cursor = connect.cursor()
@@ -207,26 +209,25 @@ def updateslot():
         print(request.form['slot'])
       
         details = update_appointment_slot(cursor, request.form['id'], request.form['slot'])
-        if(details is not None):
+        # if(details is not None):
             
-            curdetails = ','.join(str(d) for d in details)
-        
-            email_doctor(cursor, mail, app_ID = request.form['id'])
-        
-            print(type(curdetails), type(details[0]))
+        curdetails = ','.join(str(d) for d in details)
+    
+        email_doctor(cursor, mail, app_ID = request.form['id'])
+    
+        print(type(curdetails), type(details[0]))
 
-            return render_template('front_desk_op.html', display=4, flag=5, curdetails=curdetails)
+        return render_template('front_desk_op.html', display=4, flag=5, curdetails=curdetails)
 
-        else:
+        # else:
             # TODO - What to do if details is None
-            return render_template('front_desk_op.html', display=4, flag=6, curdetails='')
+            # return render_template('front_desk_op.html', display=4, flag=6, curdetails='')
         
 
 @app.route('/scheduletesttreatmentbutton', methods=["POST", "GET"])
 def scheduletesttreatmentbutton():
     return redirect('/frontdesk/scheduletesttreatment/0')
 
-# TODO - Implement Scheduling & connect to backend
 @app.route('/scheduletesttreatment', methods=["POST", "GET"])
 def scheduletesttreatment():
     if request.method == "POST":
@@ -242,11 +243,14 @@ def scheduletesttreatment():
         tests = unscheduled_TT(cursor)
         curtest = request.form['patient-name'] + ',' + request.form['test-treatment'] + ',' + request.form['doctor-name']
         
-        # if(date is None or date == ""):
+        if(date is None or date == ""):
+            date = datetime.today().strftime('%Y-%m-%d')
+            
         
         if(slot is None or slot == -1):
             return render_template('front_desk_op.html', display=5, flag=2, tests=tests, curtest=curtest)
             
+        slot = slots[slot-1]
  
     return render_template('front_desk_op.html', display=5, flag=1, date=date, slot= slot, tests=tests, curtest=curtest)
 

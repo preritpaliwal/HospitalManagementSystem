@@ -121,6 +121,10 @@ def update_appointment_slot(cursor, app_ID, slot):
     cursor.execute(query)
 
     app_data = cursor.fetchall()[0]
+    
+    slots = [ str(x)+":00-"+str(x+1)+":00" for x in range(9,13) ] + [ str(x)+":00-"+str(x+1)+":00" for x in range(14,18) ]
+    app_data = (app_data[0], app_data[1], app_data[2], app_data[3], app_data[4], slots[app_data[5]-1] )
+    
     return app_data
 
 # Notify Doctors of Appointments

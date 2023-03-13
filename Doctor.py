@@ -1,3 +1,5 @@
+from datetime import datetime
+
 def fetch_all_patients(cursor, DoctorID):
     
     query = f"SELECT DISTINCT Patient.ID, Patient.Name, Patient.Age,  Patient.Phone, \
@@ -17,7 +19,11 @@ def fetch_schedule(cursor, DoctorID):
     
     slots = [ str(x)+":00-"+str(x+1)+":00" for x in range(9,13) ] + [ str(x)+":00-"+str(x+1)+":00" for x in range(14,18) ]
     
-    query = f"SELECT dt,slot,'Appointment' FROM Appointment WHERE Doctor = {DoctorID} ORDER BY dt, Slot;"
+    date = datetime.today().strftime('%Y-%m-%d')
+    
+    query = f"SELECT dt,slot,'Appointment' \
+            FROM Appointment WHERE Doctor = {DoctorID} and dt >= {date} \
+            ORDER BY dt, Slot;"
     cursor.execute(query)
     
     
@@ -28,7 +34,10 @@ def fetch_schedule(cursor, DoctorID):
     
     print(appointments)
     
-    query = f"SELECT Undergoes.dt, Undergoes.slot,Test_Treatment.Type, Test_Treatment.Name  FROM Undergoes JOIN Test_Treatment on (Undergoes.Code = Test_Treatment.Code) WHERE Doctor = {DoctorID} and dt is NOT NULL ORDER BY dt, Slot;"
+    query = f"SELECT Undergoes.dt, Undergoes.slot,Test_Treatment.Type, Test_Treatment.Name \
+            FROM Undergoes JOIN Test_Treatment on (Undergoes.Code = Test_Treatment.Code) \
+            WHERE Doctor = {DoctorID} and dt is NOT NULL and dt >= {date} and Outcome is NULL \
+            ORDER BY dt, Slot;"
     cursor.execute(query)
     
     tests_treatments = list(cursor.fetchall())
