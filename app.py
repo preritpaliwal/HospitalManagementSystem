@@ -1,4 +1,6 @@
-from flask import Flask, render_template, Response, jsonify, request, redirect
+from flask import Flask, render_template
+from flask import request, redirect
+from flask_mail import Mail
 from Queries import *
 from FrontDeskOp import *
 from DbAdmin import *
@@ -8,9 +10,19 @@ import os
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 app.config["DEBUG"] = True
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
+
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'medpal.hospital@gmail.com'
+app.config['MAIL_PASSWORD'] = 'axwdwjqocqiltmir'
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
 
 currentuserid = -1
 
@@ -195,10 +207,20 @@ def updateslot():
         print(request.form['slot'])
       
         details = update_appointment_slot(cursor, request.form['id'], request.form['slot'])
-        curdetails = ','.join(str(d) for d in details)
+        if(details is not None):
+            
+            curdetails = ','.join(str(d) for d in details)
         
-        print(type(curdetails), type(details[0]))
-    return render_template('front_desk_op.html', display=4, flag=5, curdetails=curdetails)
+            email_doctor(cursor, mail, app_ID = request.form['id'])
+        
+            print(type(curdetails), type(details[0]))
+
+            return render_template('front_desk_op.html', display=4, flag=5, curdetails=curdetails)
+
+        else:
+            # TODO - What to do if details is None
+            return render_template('front_desk_op.html', display=4, flag=6, curdetails='')
+        
 
 @app.route('/scheduletesttreatmentbutton', methods=["POST", "GET"])
 def scheduletesttreatmentbutton():
@@ -211,11 +233,13 @@ def scheduletesttreatment():
         print(request.form['patient-id'])
         print(request.form['test-id'])
         print(request.form['doctor-id'])
+        
         date = '2020-01-01'
         slot = 1
         # Get the list of tests and treatments
-        tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
+        tests = unscheduled_TT(cursor)
         curtest = request.form['patient-name'] + ',' + request.form['test-treatment'] + ',' + request.form['doctor-name'] 
+        # tests = [('1', 'sam', '1', 'test1', '1', 'Dr X'), ('2', 'sam', '1', 'test2', '1', 'Dr Y'), ('3', 'sam', '1', 'test3', '1', 'Dr Z')] 
         print(type(curtest), type(request.form['patient-name']))
     return render_template('front_desk_op.html', display=5, flag=1, date=date, slot= slot, tests=tests, curtest=curtest)
 

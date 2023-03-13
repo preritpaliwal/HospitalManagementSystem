@@ -36,6 +36,25 @@ def delete_user(cursor, ID):
     """
     Delete a User with given ID.
     """
+    
+    query = f"SELECT * FROM Login_Table WHERE ID = {ID};"
+    cursor.execute(query)
+    rows = cursor.fetchall()
+    
+    print(rows, type(rows))
+    print(rows[0], type(rows[0]))
+    
+    user_type = rows[0][1]
+    
+    if(user_type == "Database Administrator"):
+        print("Cannot delete Admin user.")
+        return
+    
+    if(user_type == "Doctor"):
+        query = f"DELETE FROM Doctor WHERE ID = {ID};"
+        cursor.execute(query)
+        
+    
     query = f"DELETE FROM Login_Table WHERE ID = {ID};"
     cursor.execute(query)
 

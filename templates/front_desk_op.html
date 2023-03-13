@@ -202,18 +202,21 @@
                             <td>{{ test[1] }}</td>
                             <td>{{ test[3] }}</td>
                             <td>{{ test[5] }}</td>
-                            <td>
-                                <form action="/scheduletesttreatment" method="post">
-                                    <input type="hidden" name="patient-id" value="{{ test[0] }}">
-                                    <input type="hidden" name="patient-name" value="{{ test[1] }}">
-                                    <input type="hidden" name="test-id" value="{{ test[2] }}">
-                                    <input type="hidden" name="test-treatment" value="{{ test[3] }}">
-                                    <input type="hidden" name="doctor-id" value="{{ test[4] }}">
-                                    <input type="hidden" name="doctor-name" value="{{ test[5] }}">
+                            <form action="/scheduletesttreatment" method="post">
+                                <input type="hidden" name="patient-id" value="{{ test[0] }}">
+                                <input type="hidden" name="patient-name" value="{{ test[1] }}">
+                                <input type="hidden" name="test-id" value="{{ test[2] }}">
+                                <input type="hidden" name="test-treatment" value="{{ test[3] }}">
+                                <input type="hidden" name="doctor-id" value="{{ test[4] }}">
+                                <input type="hidden" name="doctor-name" value="{{ test[5] }}">
+                                <td>  
+                                    <input type="date" name="date" required>
+                                </td>
+                                <td>
                                     <button class="btn-schedule">Schedule</button>
-                                </form>
-                            </td>
-                            <td class="not-scheduled">Not yet Scheduled</td>
+                                </td>
+                            </form>
+
                         </tr>
                         {% endfor %}
                     </tbody>

@@ -1,6 +1,6 @@
 import pymysql
 from tabulate import tabulate
-
+from flask_mail import Message
 
 def validate_user(cursor, Id, Type, Password):
     """
@@ -37,6 +37,7 @@ def register_patient(cursor, Name, Age, Phone, Email, Address, InsuranceID):
 
     if (cursor.rowcount != 0):
         print("Patient already exists.")
+        print(cursor.fetchall())
         return False
 
     query = f"INSERT INTO Patient ( Name, Age, Phone, Email, Address, InsuranceID ) VALUES {Name, Age, Phone, Email, Address, InsuranceID} ;"
@@ -61,14 +62,14 @@ def schedule_appointment(cursor, PatientID, DoctorID, Date):
 
     # Case when the patient isn't registered
     if (cursor.rowcount == 0):
-        return 1
+        return (1,None,None)
 
     query = f"SELECT * FROM Doctor WHERE ID = {DoctorID};"
     cursor.execute(query)
 
     # Case when Doctor isn't registered
     if (cursor.rowcount == 0):
-        return 2
+        return (2,None,None)
 
     if (Date is None or Date == ""):
         Date = 'CURDATE()'
@@ -83,7 +84,7 @@ def schedule_appointment(cursor, PatientID, DoctorID, Date):
 
     # We assume a doctor has 8 total slots (1 hr each) per day (9 am - 1 pm, 2 pm - 6 pm)
     if (cursor.rowcount == 8):
-        return 3
+        return (3,None,None)
 
     rows = cursor.fetchall()
 
@@ -111,7 +112,7 @@ def update_appointment_slot(cursor, app_ID, slot):
     cursor.execute(query)
 
     if (cursor.rowcount == 0):
-        print("Appointment doesn't exist!")
+        print("Appointment doesn't exist! for ID = ", app_ID)
         return None
 
     query = f"SELECT Patient.ID, Patient.Name, Doctor.ID, Doctor.Name, Appointment.dt, Appointment.Slot \
@@ -124,6 +125,45 @@ def update_appointment_slot(cursor, app_ID, slot):
 
 # Notify Doctors of Appointments
 # TODO - Figure out this shit
+def email_doctor(cursor, mail, app_ID = None, TT_id = None):
+    
+    slots = [ str(x)+":00-"+str(x+1)+":00" for x in range(9,13) ] + [ str(x)+":00-"+str(x+1)+":00" for x in range(14,18) ]
+    
+    if(app_ID is not None):
+        
+        query = f"SELECT Patient.Name, Doctor.Name, Doctor.Email, Appointment.dt, Appointment.Slot \
+                FROM Appointment JOIN Patient JOIN Doctor ON (Appointment.Patient = Patient.ID and Appointment.Doctor = Doctor.ID) \
+                WHERE Appointment.ID = {app_ID};"
+        cursor.execute(query)
+        app_rows = cursor.fetchall()        
+        
+        app_patient = app_rows[0][0]
+        doctor_name = app_rows[0][1]
+        doctor_email = app_rows[0][2]
+        app_date = app_rows[0][3]
+        app_slot = slots[app_rows[0][4] - 1]        
+        
+        email = Message(
+            subject= f'Appointment scheduled on {app_date} at {app_slot}',
+            sender = 'medpal.hospital@gmail.com',
+            recipients= [doctor_email],
+            
+            body = f"Hello Dr. {doctor_name},\n\n \
+                You have an appointment with patient : {app_patient} on {app_date} at {app_slot}.\n\n"
+        ) 
+        
+        # print(email)
+        
+        try:
+            print(f"Sending email to {doctor_email}")
+            
+            mail.send(email)
+            
+            print("Email sent successfully!")
+            
+        except Exception as e:
+            print(f"\n\nMAIL WAS NOT SENT : {e}\n\n")
+        
 
 # TODO - Take User opinion for room type, Currently assigning room with most availability %.
 
@@ -213,7 +253,7 @@ def discharge_patient(cursor, PatientID, DischargeDate):
 
 # Schedule Tests and Treatments Sessions prescribed to Patients by Doctors
 # TODO - Figure out this shit
-def schedule_TT(cursor, PatientID, DoctorID, TestID, Date, Slot):
+def schedule_TT(cursor, PatientID, DoctorID, TestID):
     
     query = f"SELECT * FROM Undergoes \
             WHERE Patient = {PatientID} and Doctor = {DoctorID} and Code = '{TestID}' and dt is NULL and slot is NULL;"

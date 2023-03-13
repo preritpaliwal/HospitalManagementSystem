@@ -13,6 +13,15 @@ def fetch_all_patients(cursor, DoctorID):
     
     return rows
 
+def fetch_schedule(cursor, DoctorID):
+    
+    slots = [ str(x)+":00-"+str(x+1)+":00" for x in range(9,13) ] + [ str(x)+":00-"+str(x+1)+":00" for x in range(14,18) ]
+    
+    query = f"SELECT  FROM Appointment WHERE Doctor = {DoctorID} ORDER BY dt, Slot;"
+    cursor.execute(query)
+    
+    
+
 def patient_history_TT(cursor, PatientID):
     """
     Fetch Test / Treatment history of a patient.
