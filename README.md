@@ -6,7 +6,7 @@ Team members: <br />
 4. 20CS10072 - Vibhu <br />
 5. 20CS30056 - Umika Agrawal  <br />
 <br />
-#How to run the application?
+#How to run the application? <br />
 1. To run the web application run the following code on your linux terminal:  <br />
 $ python app.py <br />
 then go to http://127.0.0.1:5000/ <br />
