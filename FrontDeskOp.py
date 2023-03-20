@@ -168,6 +168,39 @@ def email_doctor(cursor, mail, app_ID = None, TT_id = None):
         except Exception as e:
             print(f"\n\nMAIL WAS NOT SENT : {e}\n\n")
         
+    if(TT_id is not None):
+        
+        query = f"SELECT Patient.Name, Doctor.Name, Doctor.Email, Undergoes.dt, Undergoes.slot \
+                FROM Undergoes JOIN Patient JOIN Doctor on (Undergoes.Patient = Patient.ID and Undergoes.Doctor = Doctor.ID) \
+                WHERE Undergoes.ID = {TT_id};"
+        cursor.execute(query)
+        app_rows = cursor.fetchall()
+        
+        app_patient = app_rows[0][0]
+        doctor_name = app_rows[0][1]
+        doctor_email = app_rows[0][2]
+        app_date = app_rows[0][3]
+        app_slot = slots[app_rows[0][4] - 1]  
+        
+        email = Message(
+            subject = f"Test/Treatment scheduled on {app_date} at {app_slot}",
+            sender = 'medpal.hospital@gmail.com',
+            recipients = [doctor_email],
+            
+            body = f"Hello Dr. {doctor_name},\n\n \
+                    You have a Test/Treatment appointment with Patient: {app_patient} on {app_date} at {app_slot}.\n\n" 
+        )
+        
+        try:
+            print(f"Sending email to {doctor_email}")
+            
+            mail.send(email)
+            
+            print("Email sent successfully!")
+            
+        except Exception as e:
+            print(f"\n\nMAIL WAS NOT SENT : {e}\n\n")
+                
 
 # TODO - Take User opinion for room type, Currently assigning room with most availability %.
 
@@ -266,6 +299,7 @@ def schedule_TT(cursor, PatientID, DoctorID, TestID, Date):
     
     if(cursor.rowcount == 0):
         print("No such Test/Treatment prescribed to the patient")
+        return -1,None
     
     rows = cursor.fetchall()
     
@@ -277,13 +311,13 @@ def schedule_TT(cursor, PatientID, DoctorID, TestID, Date):
     else:
         Date = "'" + Date + "'"
     
-    query = f"SELECT * FROM Appointment \
+    query = f"SELECT * FROM Undergoes \
         WHERE (Patient = {PatientID} or Doctor = {DoctorID}) and dt = {Date};"    
     cursor.execute(query)
     
     # We assume a doctor has 8 total slots (1 hr each) per day (9 am - 1 pm, 2 pm - 6 pm)
     if (cursor.rowcount == 8):
-        return -1
+        return -1,app_ID
 
     rows = cursor.fetchall()
 
@@ -291,7 +325,7 @@ def schedule_TT(cursor, PatientID, DoctorID, TestID, Date):
     # slots = [("Slot " + str(x), 1) for x in range(1, 9)]
     slots = [ (str(x)+":00-"+str(x+1)+":00", 1) for x in range(9,13) ] + [ (str(x)+":00-"+str(x+1)+":00",1) for x in range(14,18) ]
     for row in rows:
-        slots[(int)(row[4]-1)] = (slots[(int)(row[4]-1)][0], 0)
+        slots[(int)(row[5]-1)] = (slots[(int)(row[5]-1)][0], 0)
     
     idx = -1
     for (i,(slot, avail)) in enumerate(slots):
@@ -300,13 +334,13 @@ def schedule_TT(cursor, PatientID, DoctorID, TestID, Date):
             break
         
     if(idx == -1):
-        return -1
+        return -1,app_ID
     
     query =f"UPDATE Undergoes SET dt = {Date}, slot = {idx} WHERE ID = {app_ID};"
     
     cursor.execute(query)
     
-    return idx
+    return (idx,app_ID)
 
 def unscheduled_TT(cursor):
 

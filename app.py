@@ -237,7 +237,7 @@ def scheduletesttreatment():
         print(request.form['date'])
         
         date = request.form['date']
-        slot = schedule_TT(cursor, request.form['patient-id'], request.form['doctor-id'], request.form['test-id'], request.form['date'])
+        slot,app_ID = schedule_TT(cursor, request.form['patient-id'], request.form['doctor-id'], request.form['test-id'], request.form['date'])
         
         # Get the list of tests and treatments
         tests = unscheduled_TT(cursor)
@@ -251,6 +251,7 @@ def scheduletesttreatment():
             return render_template('front_desk_op.html', display=5, flag=2, tests=tests, curtest=curtest)
             
         slot = slots[slot-1]
+        email_doctor(cursor, mail, TT_id = app_ID)
  
     return render_template('front_desk_op.html', display=5, flag=1, date=date, slot= slot, tests=tests, curtest=curtest)
 
